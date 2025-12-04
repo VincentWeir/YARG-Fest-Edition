@@ -62,8 +62,8 @@ namespace YARG.Gameplay.Visuals
                 NoteGroup = NoteRef.Type switch
                 {
                     GuitarNoteType.Strum => noteGroups[(int) NoteType.Strum],
-                    GuitarNoteType.Hopo  => noteGroups[(int) NoteType.HOPO],
-                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.Tap],
+                    GuitarNoteType.Hopo  => noteGroups[(int) NoteType.Tap],
+                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.Strum],
                     _ => throw new ArgumentOutOfRangeException(nameof(NoteRef.Type))
                 };
 
