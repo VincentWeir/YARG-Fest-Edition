@@ -87,6 +87,8 @@ namespace YARG.Menu.MusicLibrary
 
         public bool ShouldDisplaySoloHighScores { get; private set; }
 
+        private bool isProMode = false;
+
         private SongCategory[] _sortedSongs;
 
         private CancellationTokenSource _previewCanceller;
@@ -228,6 +230,12 @@ namespace YARG.Menu.MusicLibrary
                         () => _searchField.Focus()),
                     new NavigationScheme.Entry(MenuAction.Orange, "Menu.MusicLibrary.MoreOptions",
                         OnButtonHit, OnButtonRelease),
+                    new NavigationScheme.Entry(MenuAction.Select, isProMode ? "Menu.MusicLibrary.IsProMode.On" : "Menu.MusicLibrary.IsProMode.Off",
+                        () =>
+                        {
+                            ToggleProMode();
+                        }
+                    )
                 }, false));
             }
             else
@@ -269,8 +277,20 @@ namespace YARG.Menu.MusicLibrary
                         StartSetlist),
                     new NavigationScheme.Entry(MenuAction.Orange, "Menu.MusicLibrary.MoreOptions",
                         OnButtonHit, OnButtonRelease),
+                    new NavigationScheme.Entry(MenuAction.Select, isProMode ? "Menu.MusicLibrary.IsProMode.On" : "Menu.MusicLibrary.IsProMode.Off",
+                        () =>
+                        {
+                            ToggleProMode();
+                        }
+                    )
                 }, false));
             }
+        }
+
+        private void ToggleProMode()
+        {
+            isProMode = !isProMode;
+            SetNavigationScheme();
         }
 
         protected override void OnSelectedIndexChanged()

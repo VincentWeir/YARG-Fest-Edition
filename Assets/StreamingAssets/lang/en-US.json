@@ -287,7 +287,11 @@
             "StartSet": "Start The Set",
             "NoSongsInPlaylist": "No Songs In Playlist",
             "CannotAddToSelf": "No, I will not create an ouroboros for you. Nice try, Jaden.",
-            "MoreOptions": "<align=left><size=80%>More Options<br>(Hold) Navigate Sections</size></align>"
+            "MoreOptions": "<align=left><size=80%>More Options<br>(Hold) Navigate Sections</size></align>",
+            "IsProMode": {
+                "On": "<align=left><size=80%>Change Mode<br>(Current: Pro Mode)",
+                "Off": "<align=left><size=80%>Change Mode<br>(Current: Pad Mode)"
+            }
         },
         "ProfileInfo": {
             "Name": "Edit Profile",
