@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿﻿using System;
+using System.Linq;
 using Cysharp.Text;
 using UnityEngine;
 using YARG.Core.Game;
@@ -42,7 +43,8 @@ namespace YARG.Menu.MusicLibrary
 
         public override string GetPrimaryText(bool selected)
         {
-            return FormatAs(SongEntry.Name, TextType.Primary, selected);
+            // Remove a trailing "(Pro)" tag from the displayed title
+            return FormatAs(RemoveProTag(SongEntry.Name.ToString()), TextType.Primary, selected);
         }
 
         public override string GetSecondaryText(bool selected)
@@ -225,6 +227,24 @@ namespace YARG.Menu.MusicLibrary
             {
                 _bandScoreRecord = ScoreContainer.GetBandHighScore(SongEntry.Hash);
             }
+        }
+
+        private const string PRO_TAG = " (Pro)";
+
+        private static string RemoveProTag(string title)
+        {
+            if (string.IsNullOrEmpty(title)) return title;
+
+            // Trim trailing whitespace so we can reliably test the suffix.
+            title = title.TrimEnd();
+
+            if (title.EndsWith(PRO_TAG, StringComparison.OrdinalIgnoreCase))
+            {
+                // Remove the tag and any trailing whitespace left behind.
+                title = title.Substring(0, title.Length - PRO_TAG.Length).TrimEnd();
+            }
+
+            return title;
         }
     }
 }
