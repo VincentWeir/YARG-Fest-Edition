@@ -23,8 +23,6 @@ namespace YARG.Menu.MusicLibrary
         private Transform _difficultyRingsBottomContainer;
 
         [SerializeField]
-        private TextMeshProUGUI _album;
-        [SerializeField]
         private TextMeshProUGUI _source;
         [SerializeField]
         private TextMeshProUGUI _charter;
@@ -115,7 +113,6 @@ namespace YARG.Menu.MusicLibrary
             // Hide album art
             _albumCover.texture = null;
             _albumCover.color = Color.clear;
-            _album.text = string.Empty;
 
             _year.text = string.Empty;
             _length.text = string.Empty;
@@ -135,7 +132,6 @@ namespace YARG.Menu.MusicLibrary
         {
             var songEntry = songViewType.SongEntry;
 
-            _album.text = songEntry.Album;
             _source.text = SongSources.SourceToGameName(songEntry.Source);
             _charter.text = songEntry.Charter;
             _genre.text = songEntry.Genre;
