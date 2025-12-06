@@ -87,7 +87,7 @@ namespace YARG.Menu.MusicLibrary
 
         public bool ShouldDisplaySoloHighScores { get; private set; }
 
-        private bool isProMode = false;
+        public bool isProMode = false;
 
         private SongCategory[] _sortedSongs;
 
