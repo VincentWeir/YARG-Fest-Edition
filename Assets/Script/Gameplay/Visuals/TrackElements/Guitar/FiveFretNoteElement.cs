@@ -37,6 +37,9 @@ namespace YARG.Gameplay.Visuals
         [SerializeField]
         private float maxSustainLength;
 
+        // Keep a handle to the running fade coroutine so we can stop it when the sustain end is destroyed
+        private Coroutine _sustainFadeCoroutine;
+
         // Dynamically updates maxSustainLength using the equation Y = 180 / BPM, and clamps Y to 1
         private void UpdateMaxSustainLengthWithTempo()
         {
@@ -156,9 +159,17 @@ namespace YARG.Gameplay.Visuals
                     sustainEndInstance = Instantiate(sustainEndPrefab, transform);
                     sustainEndInstance.transform.localPosition = new Vector3(0f, 0f, len);
 
-                    StartCoroutine(FadeIn(sustainEndInstance));
-
                     _sustainLine._lineRenderer.enabled = false;
+
+                    // Start the fade-in coroutine for the URP material on the sustain end instance
+                    // Stop any previous coroutine (shouldn't be one, but defensive)
+                    if (_sustainFadeCoroutine != null)
+                    {
+                        StopCoroutine(_sustainFadeCoroutine);
+                        _sustainFadeCoroutine = null;
+                    }
+
+                    _sustainFadeCoroutine = StartCoroutine(FadeInSustainEndMaterial(sustainEndInstance, 1f));
                 }
                 else
                 {
@@ -190,6 +201,13 @@ namespace YARG.Gameplay.Visuals
 
             if (sustainEndInstance != null)
             {
+                // Stop the fade coroutine if it's running, then destroy
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
                 Destroy(sustainEndInstance);
                 sustainEndInstance = null;
             }
@@ -271,6 +289,13 @@ namespace YARG.Gameplay.Visuals
         {
             if (sustainEndInstance != null)
             {
+                // Stop fade coroutine if running
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
                 Destroy(sustainEndInstance);
                 sustainEndInstance = null;
             }
@@ -290,34 +315,71 @@ namespace YARG.Gameplay.Visuals
             }
         }
 
-        public IEnumerator FadeIn(GameObject obj)
+        /// <summary>
+        /// Coroutine that fades the alpha of the first Renderer material it finds on the sustain end
+        /// instance from 0 to 1 over duration seconds. It attempts to handle URP Lit materials by
+        /// trying common color property names ("_BaseColor" then "_Color"). The material instance is
+        /// accessed via renderer.material so the shared material is not modified.
+        /// 
+        /// Note: For the alpha change to be visible the material must be using a Surface Type that
+        /// supports transparency (e.g. Transparent). If the prefab's material is Opaque you will need
+        /// to either make a transparent variant or switch the material's surface type to Transparent.
+        /// </summary>
+        private IEnumerator FadeInSustainEndMaterial(GameObject instance, float duration)
+        {
+            if (instance == null)
+                yield break;
+
+            // Find a renderer (child or on the root)
+            var rend = instance.GetComponentInChildren<Renderer>();
+            if (rend == null)
+                yield break;
+
+            // Use renderer.material to create an instance (so we don't modify sharedMaterial)
+            var mat = rend.material;
+            if (mat == null)
+                yield break;
+
+            // Determine which color property to use for URP/standard materials
+            string colorProp = null;
+            if (mat.HasProperty("_BaseColor"))
+                colorProp = "_BaseColor";
+            else if (mat.HasProperty("_Color"))
+                colorProp = "_Color";
+
+            if (colorProp == null)
+                yield break;
+
+            // Ensure the material's surface type supports alpha (URP uses _Surface: 0=Opaque,1=Transparent)
+            // This is best handled by preparing the prefab material in the editor, but we do a best-effort attempt here.
+            if (mat.HasProperty("_Surface"))
             {
-                Renderer renderer = obj.GetComponent<Renderer>();
-                if (renderer == null) yield break;
-
-                Material material = renderer.material;
-                Color color = material.color;
-        
-                // Set initial alpha to 0 (fully transparent)
-                color.a = 0f;
-                material.color = color;
-
-                // Fade in over time (1 second for example)
-                float fadeDuration = 1.5f;
-                float elapsedTime = 0f;
-
-                while (elapsedTime < fadeDuration)
-                {
-                    elapsedTime += Time.deltaTime;
-                    color.a = Mathf.Lerp(0f, 0.8f, elapsedTime / fadeDuration);
-                    material.color = color;
-
-                    yield return null;  // Wait for the next frame
-                }
-
-                // Ensure the alpha is set to 1 (fully visible) at the end
-                color.a = 1f;
-                material.color = color;
+                // Set to Transparent (1) so alpha will be respected.
+                // Note: changing this at runtime may not update shader keywords in some Unity versions.
+                mat.SetFloat("_Surface", 1f);
             }
+
+            // Read starting color and set alpha to 0 immediately
+            Color col = mat.GetColor(colorProp);
+            col.a = 0f;
+            mat.SetColor(colorProp, col);
+
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                col.a = t;
+                mat.SetColor(colorProp, col);
+                yield return null;
+            }
+
+            // Ensure final alpha is exactly 1
+            col.a = 1f;
+            mat.SetColor(colorProp, col);
+
+            // Clear stored coroutine handle
+            _sustainFadeCoroutine = null;
+        }
     }
 }
