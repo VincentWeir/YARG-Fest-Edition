@@ -123,7 +123,7 @@ namespace YARG.Menu.DifficultySelect
             }, false));
 
             _speedInput.text = $"{Mathf.RoundToInt(_songSpeed * 100f)}%";
-            _songTitleText.text = GlobalVariables.State.CurrentSong.Name;
+            _songTitleText.text = RemoveProTag(GlobalVariables.State.CurrentSong.Name);
             _artistText.text = GlobalVariables.State.CurrentSong.Artist;
 
             if (GlobalVariables.State.PlayingAShow)
@@ -696,6 +696,26 @@ namespace YARG.Menu.DifficultySelect
             int intSpeed = (int) Math.Clamp(speed, 10, 5000);
 
             _speedInput.SetTextWithoutNotify($"{intSpeed}%");
+        }
+
+        
+
+        private const string PRO_TAG = " (Pro)";
+
+        private static string RemoveProTag(string title)
+        {
+            if (string.IsNullOrEmpty(title)) return title;
+
+            // Trim trailing whitespace so we can reliably test the suffix.
+            title = title.TrimEnd();
+
+            if (title.EndsWith(PRO_TAG, StringComparison.OrdinalIgnoreCase))
+            {
+                // Remove the tag and any trailing whitespace left behind.
+                title = title.Substring(0, title.Length - PRO_TAG.Length).TrimEnd();
+            }
+
+            return title;
         }
     }
 }

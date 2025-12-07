@@ -10,6 +10,7 @@ using YARG.Core.Engine;
 using YARG.Core.Logging;
 using YARG.Gameplay.HUD;
 using YARG.Gameplay.Visuals;
+using YARG.Menu.MusicLibrary;
 using YARG.Player;
 using YARG.Settings;
 using YARG.Themes;
@@ -44,6 +45,8 @@ namespace YARG.Gameplay.Player
         protected SunburstEffects SunburstEffects;
         [SerializeField]
         protected HitWindowDisplay HitWindowDisplay;
+        [SerializeField]
+        protected GameObject _laneSeperator;
 
         [SerializeField]
         private Transform _hudLocation;
@@ -109,6 +112,8 @@ namespace YARG.Gameplay.Player
                 or Instrument.ProBass_22Fret;
 
             TrackView.ShowPlayerName(player);
+
+            LaneSeperator();
         }
 
         protected override void ResetVisuals()
@@ -124,6 +129,18 @@ namespace YARG.Gameplay.Player
             BeatlinePool.ReturnAllObjects();
 
             HitWindowDisplay.SetHitWindowSize();
+        }
+
+        public void LaneSeperator()
+        {
+            if (MusicLibraryMenu.isProMode == true)
+            {
+                _laneSeperator.SetActive(false);
+            }
+            else
+            {
+                _laneSeperator.SetActive(true);
+            }
         }
     }
 

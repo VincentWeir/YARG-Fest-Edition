@@ -170,7 +170,7 @@ namespace YARG.Menu.MusicLibrary
 
             */
 
-            if (_musicLibraryMenu.isProMode == false)
+            if (MusicLibraryMenu.isProMode == false)
             {
                 _difficultyRings[0].SetInfo("keys", Instrument.Keys, entry[Instrument.Keys]);
                 _difficultyRings[1].SetInfo("bass", Instrument.FiveFretBass, entry[Instrument.FiveFretBass]);
