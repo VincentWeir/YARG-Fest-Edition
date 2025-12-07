@@ -5,6 +5,7 @@ using UnityEngine;
 using YARG.Core.Chart;
 using YARG.Gameplay.Player;
 using YARG.Helpers.Extensions;
+using YARG.Menu.MusicLibrary;
 using YARG.Themes;
 
 namespace YARG.Gameplay.Visuals
@@ -150,7 +151,7 @@ namespace YARG.Gameplay.Visuals
                 _sustainLine.Initialize(len);
 
                 const float sustainThresholdTolerance = 0.05f;
-                if (len <= maxSustainLength + sustainThresholdTolerance && sustainEndPrefab != null && sustainEndInstance == null)
+                if (len <= maxSustainLength + sustainThresholdTolerance && sustainEndPrefab != null && sustainEndInstance == null && MusicLibraryMenu.isProMode == false)
                 {
                     sustainEndInstance = Instantiate(sustainEndPrefab, transform);
                     sustainEndInstance.transform.localPosition = new Vector3(0f, 0f, len);

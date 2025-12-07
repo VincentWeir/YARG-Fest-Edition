@@ -68,8 +68,6 @@ namespace YARG.Gameplay.Player
         [SerializeField]
         private Pool _rangeIndicatorPool;
 
-        private GameObject _padModeLaneSeperator;
-
         public override float[] StarMultiplierThresholds { get; protected set; } =
             GuitarStarMultiplierThresholds;
 
