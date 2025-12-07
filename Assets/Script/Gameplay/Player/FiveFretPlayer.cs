@@ -75,6 +75,8 @@ namespace YARG.Gameplay.Player
 
         public float WhammyFactor { get; private set; }
 
+        private FiveFretNoteElement _fiveFretNoteElement;
+
         private int _sustainCount;
 
         private SongStem _stem;

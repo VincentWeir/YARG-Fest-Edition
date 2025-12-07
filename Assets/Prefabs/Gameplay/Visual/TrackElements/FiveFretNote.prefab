@@ -50,6 +50,9 @@ MonoBehaviour:
   StarPowerNoteGroups: []
   _normalSustainLine: {fileID: 6564187009765405389}
   _openSustainLine: {fileID: 6817911577054343240}
+  sustainEndPrefab: {fileID: 1988471818940370501, guid: f2036f6575cb97b41abdbf09663f3b11,
+    type: 3}
+  maxSustainLength: 0.01
 --- !u!1 &5594689482099579600
 GameObject:
   m_ObjectHideFlags: 0

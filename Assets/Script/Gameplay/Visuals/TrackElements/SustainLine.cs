@@ -17,7 +17,7 @@ namespace YARG.Gameplay.Visuals
         private static readonly int _forwardOffset      = Shader.PropertyToID("_ForwardOffset");
 
         [SerializeField]
-        private LineRenderer _lineRenderer;
+        public LineRenderer _lineRenderer;
         [SerializeField]
         private bool _setShaderProperties = true;
 
