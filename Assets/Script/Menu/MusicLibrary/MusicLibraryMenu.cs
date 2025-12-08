@@ -5,6 +5,7 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using YARG.Core.Audio;
+using YARG.Core.Engine.Guitar.Engines;
 using YARG.Core.Input;
 using YARG.Core.Song;
 using YARG.Localization;
@@ -290,6 +291,7 @@ namespace YARG.Menu.MusicLibrary
         private void ToggleProMode()
         {
             isProMode = !isProMode;
+            YargFiveFretEngine.isProAnchoring = !YargFiveFretEngine.isProAnchoring;
             // Rebuild navigation scheme to update the Select label
             SetNavigationScheme();
             // Force re-evaluation of the search/list so filtering takes effect immediately
