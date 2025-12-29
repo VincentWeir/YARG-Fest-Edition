@@ -71,6 +71,8 @@ namespace YARG.Gameplay.Player
 
         protected bool IsBass { get; private set; }
 
+        protected bool IsKeys { get; private set; }
+
         private float _spawnAheadDelay;
 
         public virtual void Initialize(int index, YargPlayer player, SongChart chart, TrackView trackView,
@@ -110,6 +112,9 @@ namespace YARG.Gameplay.Player
                 or Instrument.SixFretBass
                 or Instrument.ProBass_17Fret
                 or Instrument.ProBass_22Fret;
+
+            IsKeys = Player.Profile.CurrentInstrument
+                is Instrument.Keys;
 
             TrackView.ShowPlayerName(player);
 
