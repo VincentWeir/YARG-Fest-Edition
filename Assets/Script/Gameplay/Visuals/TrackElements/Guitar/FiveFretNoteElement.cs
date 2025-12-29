@@ -464,7 +464,7 @@ namespace YARG.Gameplay.Visuals
             }
 
             // Ensure final alpha is exactly 1
-            col.a = 0.8f;
+            col.a = 1f;
             mat.SetColor(colorProp, col);
 
             // Clear stored coroutine handle
