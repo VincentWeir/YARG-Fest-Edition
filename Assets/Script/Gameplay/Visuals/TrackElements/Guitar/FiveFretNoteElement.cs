@@ -105,8 +105,9 @@ namespace YARG.Gameplay.Visuals
             {
                 // Deal with non-open notes
 
-                // Set the position
-                transform.localPosition = new Vector3(GetElementX(NoteRef.Fret, 5), 0f, 0f) * LeftyFlipMultiplier;
+                // Set the position using mapped X when available
+                float x = GetElementX_Mapped(NoteRef.Fret, 5);
+                transform.localPosition = new Vector3(x, 0f, 0f);
 
                 // Get which note model to use
                 NoteGroup = NoteRef.Type switch
@@ -142,6 +143,68 @@ namespace YARG.Gameplay.Visuals
             NoteGroup.SetActive(true);
             NoteGroup.Initialize();
 
+            var fretArray = Player.GetComponentInChildren<FretArray>();
+            if (fretArray != null && fretArray.IsUsingVisualFretCount())
+            {
+                float spacing = fretArray.GetVisualSpacing();
+                if (spacing > 0f)
+                {
+                    float fill = fretArray.GetNoteFillFactor();
+                    float desiredWidth = spacing * fill;
+
+                    // Compute multiplier relative to the NoteGroup's current absolute X scale
+                    // (use the first non-null NoteGroup to get a baseline)
+                    float baselineAbsX = 0f;
+                    float baselineSignX = 1f;
+                    NoteGroup baselineGroup = null;
+                    foreach (var g in NoteGroups)
+                    {
+                        if (g != null)
+                        {
+                            baselineGroup = g;
+                            break;
+                        }
+                    }
+                    if (baselineGroup == null)
+                    {
+                        // fallback to using current NoteGroup if arrays are not yet set
+                        baselineGroup = NoteGroup;
+                    }
+
+                    if (baselineGroup != null)
+                    {
+                        var baseScale = baselineGroup.transform.localScale;
+                        baselineSignX = Mathf.Sign(baseScale.x);
+                        baselineAbsX = Math.Abs(baseScale.x);
+                    }
+
+                    float multiplier = (baselineAbsX > 1e-6f) ? (desiredWidth / baselineAbsX) : fill;
+
+                    // Apply the new scale to all theme note groups so swapping doesn't jump.
+                    if (NoteGroups != null)
+                    {
+                        for (int i = 0; i < NoteGroups.Length; i++)
+                        {
+                            var g = NoteGroups[i];
+                            if (g == null) continue;
+                            var gs = g.transform.localScale;
+                            g.transform.localScale = new Vector3(Mathf.Abs(desiredWidth) * Mathf.Sign(gs.x), gs.y * multiplier, gs.z * multiplier);
+                        }
+                    }
+
+                    if (StarPowerNoteGroups != null)
+                    {
+                        for (int i = 0; i < StarPowerNoteGroups.Length; i++)
+                        {
+                            var g = StarPowerNoteGroups[i];
+                            if (g == null) continue;
+                            var gs = g.transform.localScale;
+                            g.transform.localScale = new Vector3(Mathf.Abs(desiredWidth) * Mathf.Sign(gs.x), gs.y * multiplier, gs.z * multiplier);
+                        }
+                    }
+                }
+            }
+
             // Set line length
             if (NoteRef.IsSustain)
             {
@@ -159,6 +222,32 @@ namespace YARG.Gameplay.Visuals
                     sustainEndInstance = Instantiate(sustainEndPrefab, transform);
                     sustainEndInstance.transform.localPosition = new Vector3(0f, 0f, len);
 
+                    // Scale sustain end to match note visuals:
+                    // Find a baseline NoteGroup (first non-null) and copy its localScale.
+                    // This preserves the X sign (lefty flip) and Y/Z multipliers used for the gem.
+                    Vector3 sustainScale = Vector3.one;
+                    NoteGroup baselineGroup = null;
+                    if (NoteGroups != null)
+                    {
+                        foreach (var g in NoteGroups)
+                        {
+                            if (g != null)
+                            {
+                                baselineGroup = g;
+                                break;
+                            }
+                        }
+                    }
+                    if (baselineGroup == null)
+                    {
+                        baselineGroup = NoteGroup; // fallback
+                    }
+                    if (baselineGroup != null)
+                    {
+                        sustainScale = baselineGroup.transform.localScale;
+                    }
+                    sustainEndInstance.transform.localScale = sustainScale;
+
                     _sustainLine._lineRenderer.enabled = false;
 
                     // Start the fade-in coroutine for the URP material on the sustain end instance
@@ -169,7 +258,7 @@ namespace YARG.Gameplay.Visuals
                         _sustainFadeCoroutine = null;
                     }
 
-                    _sustainFadeCoroutine = StartCoroutine(FadeInSustainEndMaterial(sustainEndInstance, 1f));
+                    _sustainFadeCoroutine = StartCoroutine(FadeInSustainEndMaterial(sustainEndInstance, 1.25f));
                 }
                 else
                 {
@@ -375,7 +464,7 @@ namespace YARG.Gameplay.Visuals
             }
 
             // Ensure final alpha is exactly 1
-            col.a = 1f;
+            col.a = 0.8f;
             mat.SetColor(colorProp, col);
 
             // Clear stored coroutine handle

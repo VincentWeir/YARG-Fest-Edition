@@ -53,6 +53,9 @@ MonoBehaviour:
   sustainEndPrefab: {fileID: 1988471818940370501, guid: f2036f6575cb97b41abdbf09663f3b11,
     type: 3}
   maxSustainLength: 0.01
+  NoteWidthFill: 2.5
+  NoteUniformScale: 1.25
+  NoteSustainWidthMultiplier: 0.9
 --- !u!1 &5594689482099579600
 GameObject:
   m_ObjectHideFlags: 0

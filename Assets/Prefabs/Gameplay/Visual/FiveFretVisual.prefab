@@ -148,6 +148,9 @@ MonoBehaviour:
   _trackWidth: 2
   _leftKickFretPosition: {fileID: 1059056642713352937}
   _rightKickFretPosition: {fileID: 5240670873078094218}
+  PadModeLaneSeparator: {fileID: 6007957927687461919}
+  FretFillFactor: 1
+  NoteFillFactor: 2.2
 --- !u!1 &7276030750432966965
 GameObject:
   m_ObjectHideFlags: 0

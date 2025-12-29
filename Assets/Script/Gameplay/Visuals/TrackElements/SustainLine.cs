@@ -30,10 +30,16 @@ namespace YARG.Gameplay.Visuals
         private float _secondaryAmplitudeTime;
         private float _tertiaryAmplitudeTime;
 
+        // store initial width so SetWidth can be relative or revertible if needed
+        private float _initialLineWidth = 0f;
+
         private void Awake()
         {
             _player = GetComponentInParent<TrackPlayer>();
             _material = _lineRenderer.material;
+
+            // cache the initial width
+            _initialLineWidth = _lineRenderer.startWidth;
         }
 
         private void Start()
@@ -52,6 +58,20 @@ namespace YARG.Gameplay.Visuals
             _lineRenderer.SetPosition(1, Vector3.zero);
 
             ResetAmplitudes();
+        }
+
+        /// <summary>
+        /// Set the line renderer start/end width in world units.
+        /// Call this when notes/frets are re-sized so sustains visually match gems.
+        /// </summary>
+        public void SetWidth(float width)
+        {
+            // Guard against invalid width
+            if (width <= 0f)
+                width = Mathf.Max(0.001f, _initialLineWidth);
+
+            _lineRenderer.startWidth = width;
+            _lineRenderer.endWidth = width;
         }
 
         public void SetState(SustainState state, Color c)
