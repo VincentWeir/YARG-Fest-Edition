@@ -44,6 +44,10 @@ namespace YARG.Gameplay.Visuals
         [SerializeField]
         private float NoteFillFactor = 1.0f;
 
+        [Tooltip("Inset factor (fraction of full width) to pull the left and right visual bounds inward when visual mapping is applied. 0 = no inset; 0.1 = pull each side in by 10%.")]
+        [SerializeField, Range(0f, 0.45f)]
+        private float SideInsetFactor = 0f;
+
         private readonly List<Fret> _frets = new();
         private readonly List<KickFret> _kickFrets = new();
 
@@ -409,6 +413,22 @@ namespace YARG.Gameplay.Visuals
                 }
 
                 return;
+            }
+
+            // Apply side inset to shrink left/right bounds if requested
+            float width = maxX - minX;
+            if (width > 1e-6f && SideInsetFactor > 0f)
+            {
+                float inset = Mathf.Clamp(SideInsetFactor, 0f, 0.45f) * width;
+                minX += inset;
+                maxX -= inset;
+                // If inset is too large and inverts bounds, clamp back
+                if (maxX < minX)
+                {
+                    float mid = (minX + maxX) * 0.5f;
+                    minX = mid;
+                    maxX = mid;
+                }
             }
 
             float computedSpacing = (count == 1) ? 0f : (maxX - minX) / (count - 1);

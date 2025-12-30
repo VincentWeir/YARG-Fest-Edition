@@ -150,7 +150,10 @@ MonoBehaviour:
   _rightKickFretPosition: {fileID: 5240670873078094218}
   PadModeLaneSeparator: {fileID: 6007957927687461919}
   FretFillFactor: 1
-  NoteFillFactor: 2.2
+  NoteFillFactor: 2.25
+  UseManualNoteScale: 0
+  ManualNoteScale: {x: 2.25, y: 2, z: 2}
+  SideInsetFactor: 0.033
 --- !u!1 &7276030750432966965
 GameObject:
   m_ObjectHideFlags: 0
