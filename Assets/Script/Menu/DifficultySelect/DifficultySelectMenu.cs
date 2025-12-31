@@ -14,6 +14,7 @@ using YARG.Core.Song;
 using YARG.Core.Utility;
 using YARG.Helpers.Extensions;
 using YARG.Localization;
+using YARG.Menu.MusicLibrary;
 using YARG.Menu.Navigation;
 using YARG.Menu.Persistent;
 using YARG.Player;
@@ -149,9 +150,31 @@ namespace YARG.Menu.DifficultySelect
 
         private void UpdateForPlayer()
         {
-            // Set player text
             var profile = CurrentPlayer.Profile;
-            _text.text = $"<sprite name=\"{profile.GameMode.ToResourceName()}\"> {profile.Name}";
+            string baseName = profile == null ? "" : profile.GameMode.ToResourceName();
+
+            string Capitalize(string s) =>
+                string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s.Substring(1);
+
+            bool IsFiveFret()
+            {
+                if (profile == null) return false;
+
+                return string.Equals(baseName, "guitar", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(baseName, "fivefret", StringComparison.OrdinalIgnoreCase);
+            }
+
+            string spriteName;
+            if (MusicLibraryMenu.isProMode && !string.IsNullOrEmpty(baseName))
+            {
+                spriteName = "real" + Capitalize(baseName);
+            }
+            else
+            {
+                spriteName = IsFiveFret() ? "band" : (string.IsNullOrEmpty(baseName) ? "band" : "real" + Capitalize(baseName));
+            }
+
+            _text.text = $"<sprite name=\"{spriteName}\"> {profile?.Name ?? ""}";
 
             // Reset content
             _navGroup.ClearNavigatables();
