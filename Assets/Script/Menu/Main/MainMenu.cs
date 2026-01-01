@@ -84,10 +84,10 @@ namespace YARG.Menu.Main
             MenuManager.Instance.PushMenu(MenuManager.Menu.ProfileList);
         }
 
-        public void Replays()
-        {
-            MenuManager.Instance.PushMenu(MenuManager.Menu.History);
-        }
+        // public void Replays()
+        // {
+        //     MenuManager.Instance.PushMenu(MenuManager.Menu.History);
+        // }
 
         public void Credits()
         {

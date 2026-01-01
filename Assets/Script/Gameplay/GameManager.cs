@@ -260,9 +260,9 @@ namespace YARG.Gameplay
 
         public void SetSongSpeed(float speed)
         {
-            _songRunner.SetSongSpeed(speed);
+            // _songRunner.SetSongSpeed(speed);
 
-            BackgroundManager.SetSpeed(_songRunner.SongSpeed);
+            // BackgroundManager.SetSpeed(_songRunner.SongSpeed);
         }
 
         public int GetMixerFFTData(float[] buffer, int fftSize, bool complex)
@@ -277,20 +277,20 @@ namespace YARG.Gameplay
 
         public void AdjustSongSpeed(float deltaSpeed)
         {
-            _songRunner.AdjustSongSpeed(deltaSpeed);
+            // _songRunner.AdjustSongSpeed(deltaSpeed);
 
-            // Only scale the player speed in practice
-            if (IsPractice && _songRunner.SongSpeed >= 1)
-            {
-                // Scale only if the speed is greater than 1
-                var speed = _songRunner.SongSpeed >= 1 ? _songRunner.SongSpeed : 1;
-                foreach (var player in _players)
-                {
-                    player.BaseEngine.SetSpeed(speed);
-                }
-            }
+            // // Only scale the player speed in practice
+            // if (IsPractice && _songRunner.SongSpeed >= 1)
+            // {
+            //     // Scale only if the speed is greater than 1
+            //     var speed = _songRunner.SongSpeed >= 1 ? _songRunner.SongSpeed : 1;
+            //     foreach (var player in _players)
+            //     {
+            //         player.BaseEngine.SetSpeed(speed);
+            //     }
+            // }
 
-            BackgroundManager.SetSpeed(_songRunner.SongSpeed);
+            // BackgroundManager.SetSpeed(_songRunner.SongSpeed);
         }
 
         public void Pause(bool showMenu = true)
