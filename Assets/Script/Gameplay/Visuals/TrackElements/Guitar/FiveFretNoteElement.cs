@@ -114,7 +114,7 @@ namespace YARG.Gameplay.Visuals
                 {
                     GuitarNoteType.Strum => noteGroups[(int) NoteType.Strum],
                     GuitarNoteType.Hopo  => noteGroups[(int) NoteType.Tap],
-                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.Strum],
+                    GuitarNoteType.Tap   => notegroupsafe(noteGroups, (int) NoteType.Strum),
                     _ => throw new ArgumentOutOfRangeException(nameof(NoteRef.Type))
                 };
 
@@ -130,9 +130,9 @@ namespace YARG.Gameplay.Visuals
                 // Get which note model to use
                 NoteGroup = NoteRef.Type switch
                 {
-                    GuitarNoteType.Strum => noteGroups[(int) NoteType.Open],
+                    GuitarNoteType.Strum => notegroupsafe(noteGroups, (int) NoteType.Open),
                     GuitarNoteType.Hopo or
-                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.OpenHOPO],
+                    GuitarNoteType.Tap   => notegroupsafe(noteGroups, (int) NoteType.OpenHOPO),
                     _ => throw new ArgumentOutOfRangeException(nameof(NoteRef.Type))
                 };
 
@@ -250,6 +250,10 @@ namespace YARG.Gameplay.Visuals
 
                     _sustainLine._lineRenderer.enabled = false;
 
+                    // NEW: mark the underlying chart note as having a lift note so the engine can award it.
+                    // This is cleared later when the sustainEndInstance is destroyed.
+                    NoteRef.IsLiftNote = true;
+
                     // Start the fade-in coroutine for the URP material on the sustain end instance
                     // Stop any previous coroutine (shouldn't be one, but defensive)
                     if (_sustainFadeCoroutine != null)
@@ -299,6 +303,12 @@ namespace YARG.Gameplay.Visuals
 
                 Destroy(sustainEndInstance);
                 sustainEndInstance = null;
+
+                // NEW: clear the flag so this note won't be counted later
+                NoteRef.IsLiftNote = false;
+
+                // NEW: Play fret hit animation(s) when sustain end is destroyed.
+                TryPlayFretHitAnimation();
             }
 
             if (NoteRef.IsSustain)
@@ -370,6 +380,26 @@ namespace YARG.Gameplay.Visuals
         {
             HideNotes();
 
+            // If sustain end object exists, destroy and clear flag
+            if (sustainEndInstance != null)
+            {
+                // Stop fade coroutine if running
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
+                Destroy(sustainEndInstance);
+                sustainEndInstance = null;
+
+                // Clear lift flag defensively
+                NoteRef.IsLiftNote = false;
+
+                // NEW: play fret hit animation(s) when sustain end is destroyed
+                TryPlayFretHitAnimation();
+            }
+
             _normalSustainLine.gameObject.SetActive(false);
             _openSustainLine.gameObject.SetActive(false);
         }
@@ -387,6 +417,12 @@ namespace YARG.Gameplay.Visuals
 
                 Destroy(sustainEndInstance);
                 sustainEndInstance = null;
+
+                // NEW: clear the flag so this note won't be counted again
+                NoteRef.IsLiftNote = false;
+
+                // NEW: play fret hit animation(s) when sustain end is destroyed
+                TryPlayFretHitAnimation();
             }
 
             if (NoteRef.IsSustain)
@@ -469,6 +505,48 @@ namespace YARG.Gameplay.Visuals
 
             // Clear stored coroutine handle
             _sustainFadeCoroutine = null;
+        }
+
+        /// <summary>
+        /// Tries to find the FretArray for this player and trigger its hit animation.
+        /// Calls PlayHitAnimation(int) for each note in the chord but offsets the fret index
+        /// left by 1 to correct the visual alignment (clamped to valid range 0..4).
+        /// </summary>
+        private void TryPlayFretHitAnimation()
+        {
+            try
+            {
+                var fretArray = Player.GetComponentInChildren<FretArray>();
+                if (fretArray != null)
+                {
+                    // Play the hit animation for every gem in the chord (parent + children).
+                    // AllNotes enumerator yields parent first then children.
+                    foreach (var n in NoteRef.AllNotes)
+                    {
+                        // Shift left by 1 to correct alignment
+                        int targetIndex = n.Fret - 1;
+
+                        // Clamp to five-fret indices (0..4)
+                        if (targetIndex < 0) targetIndex = 0;
+                        if (targetIndex > 4) targetIndex = 4;
+
+                        fretArray.PlayHitAnimation(targetIndex);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // Don't let animation issues break gameplay; log for debugging.
+                Debug.LogWarning($"Failed to play fret hit animation: {e}");
+            }
+        }
+
+        // Helper to safely index noteGroups (defensive; preserves previous behavior)
+        private NoteGroup notegroupsafe(NoteGroup[] arr, int idx)
+        {
+            if (arr == null) return NoteGroup; // fallback already set
+            if (idx < 0 || idx >= arr.Length) return NoteGroup;
+            return arr[idx] ?? NoteGroup;
         }
     }
 }
