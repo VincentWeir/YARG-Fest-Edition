@@ -74,8 +74,6 @@ namespace YARG.Gameplay.Visuals
 
             float x = 30f * Player.NoteSpeed;
             float y = x / bpm;
-            // Clamp to maximum 1f (and ensure non-negative)
-            y = Mathf.Clamp(y, 0f, 1f);
             maxSustainLength = y;
         }
 
