@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using YARG.Core.Chart;
+using YARG.Core.Engine;
 using YARG.Gameplay.Player;
 using YARG.Helpers.Extensions;
 using YARG.Menu.MusicLibrary;
@@ -252,6 +253,22 @@ namespace YARG.Gameplay.Visuals
                     // This is cleared later when the sustainEndInstance is destroyed.
                     NoteRef.IsLiftNote = true;
 
+                    // NEW: increment the global lift-note total count safely (never decremented)
+                    try
+                    {
+                        var engine = Player?.Engine;
+                        if (engine != null)
+                        {
+                            // EngineStats is BaseStats-derived; increment the TotalCount we added
+                            engine.EngineStats.TotalNotes++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Don't allow stat incrementing issues to break gameplay. Log for debugging.
+                        Debug.LogWarning($"Failed to increment EngineStats.TotalCount for lift note: {ex}");
+                    }
+
                     // Start the fade-in coroutine for the URP material on the sustain end instance
                     // Stop any previous coroutine (shouldn't be one, but defensive)
                     if (_sustainFadeCoroutine != null)
@@ -303,10 +320,7 @@ namespace YARG.Gameplay.Visuals
                 sustainEndInstance = null;
 
                 // NEW: clear the flag so this note won't be counted later
-                NoteRef.IsLiftNote = false;
-
-                // NEW: Play fret hit animation(s) when sustain end is destroyed.
-                TryPlayFretHitAnimation();
+                NoteRef.IsLiftNote = true;
             }
 
             if (NoteRef.IsSustain)
