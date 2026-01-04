@@ -91,7 +91,32 @@ namespace YARG.Localization
 
         public static string ToLocalizedName(this Instrument instrument)
         {
-            return Key("Enum.Instrument", instrument);
+            // For five-fret guitar and bass, return the pro variant when MusicLibrary is in pro mode.
+            // Fallback to the usual key if pro-specific key is not found (Localize.Key will warn and return the key).
+            switch (instrument)
+            {
+                case Instrument.FiveFretGuitar:
+                    // Build key like "Enum.Instrument.FiveFretGuitar.Pro" when pro mode is on
+                    if (YARG.Menu.MusicLibrary.MusicLibraryMenu.isProMode)
+                    {
+                        var proKey = MakeKey("Enum.Instrument", "FiveFretGuitar", "Pro");
+                        if (LocalizationManager.TryGetLocalizedKey(proKey, out var proVal))
+                            return proVal;
+                    }
+                    return Key("Enum.Instrument", instrument);
+
+                case Instrument.FiveFretBass:
+                    if (YARG.Menu.MusicLibrary.MusicLibraryMenu.isProMode)
+                    {
+                        var proKey = MakeKey("Enum.Instrument", "FiveFretBass", "Pro");
+                        if (LocalizationManager.TryGetLocalizedKey(proKey, out var proVal))
+                            return proVal;
+                    }
+                    return Key("Enum.Instrument", instrument);
+
+                default:
+                    return Key("Enum.Instrument", instrument);
+            }
         }
 
         public static string ToLocalizedName(this Modifier modifier)

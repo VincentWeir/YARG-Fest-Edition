@@ -235,6 +235,7 @@ namespace YARG.Menu.MusicLibrary
                         () =>
                         {
                             ToggleProMode();
+                            ToastManager.ToastMessage(isProMode ? "Chart mode changed to Pro Mode." : "Chart mode changed to Pad Mode.");
                         }
                     )
                 }, false));
