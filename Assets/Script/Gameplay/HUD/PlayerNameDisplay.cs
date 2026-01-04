@@ -9,6 +9,7 @@ using YARG.Core;
 using YARG.Core.Logging;
 using YARG.Gameplay.Player;
 using YARG.Helpers.Extensions;
+using YARG.Menu.MusicLibrary;
 using YARG.Player;
 using YARG.Settings;
 
@@ -20,6 +21,8 @@ namespace YARG.Gameplay.HUD
         private TextMeshProUGUI _playerName;
         [SerializeField]
         private Image _instrumentIcon;
+        [SerializeField]
+        private GameObject _padModeIcon;
         [SerializeField]
         private RawImage _needleIcon;
 
@@ -49,6 +52,15 @@ namespace YARG.Gameplay.HUD
                 .LoadAssetAsync<Sprite>(spriteName)
                 .WaitForCompletion();
 
+            if (!MusicLibraryMenu.isProMode)
+            {
+                _padModeIcon.SetActive(true);
+            }
+            else
+            {
+                _padModeIcon.SetActive(false);
+            }
+
             StartCoroutine(FadeoutCoroutine());
         }
 
@@ -77,8 +89,43 @@ namespace YARG.Gameplay.HUD
                 return $"HarmonyVocalsIcons[{harmonyIndex + 1}]";
             }
 
-            return $"InstrumentIcons[{currentInstrument.ToResourceName()}]";
+            // Base resource name for the instrument (e.g. "guitar", "drums", etc.)
+            var baseName = currentInstrument.ToResourceName() ?? string.Empty;
+
+            // Detect drums robustly: either enum name contains "Drum" or resource name contains "drum".
+            bool IsDrums()
+            {
+                try
+                {
+                    var enumName = currentInstrument.ToString() ?? string.Empty;
+                    if (enumName.IndexOf("Drum", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return true;
+                }
+                catch
+                {
+                    // ignore and fall back to resource-name check
+                }
+
+                return baseName.IndexOf("drum", StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+
+            // If instrument is a drum (standard/pro), always use realDrums sprite key.
+            if (IsDrums())
+            {
+                return $"InstrumentIcons[realDrums]";
+            }
+
+            // If pro mode is enabled, prefix "real" and capitalize the instrument name (e.g. "realGuitar")
+            if (MusicLibraryMenu.isProMode && !string.IsNullOrEmpty(baseName))
+            {
+                baseName = "real" + Capitalize(baseName);
+            }
+
+            return $"InstrumentIcons[{baseName}]";
         }
+
+        private string Capitalize(string s) =>
+            string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s.Substring(1);
 
         private Color GetHarmonyColor(YargPlayer player)
         {
