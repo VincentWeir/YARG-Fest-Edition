@@ -56,7 +56,7 @@ namespace YARG.Gameplay.HUD
         {
             // Set text info
             _albumText.text = GameManager.Song.Album;
-            _songText.text = GameManager.Song.Name;
+            _songText.text = GameManager.Song.Name.Original.Replace(" (Pro)", "");
             _artistText.text = GameManager.Song.Artist;
             _sourceText.text = SongSources.SourceToGameName(GameManager.Song.Source);
 

@@ -61,9 +61,9 @@ namespace YARG.Helpers.Extensions
             
             return difficulty switch
             {
-                Difficulty.Easy       => 0.421875f,
-                Difficulty.Medium     => 0.5625f,
-                Difficulty.Hard       => 0.75f,
+                Difficulty.Easy       => 1f,
+                Difficulty.Medium     => 1f,
+                Difficulty.Hard       => 1f,
                 Difficulty.Expert     => 1f,
                 Difficulty.ExpertPlus => 1f,
 

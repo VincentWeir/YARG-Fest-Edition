@@ -114,7 +114,7 @@ namespace YARG.Menu.ScoreScreen
 #endif
 
             // Set text
-            _songTitle.text = song.Name;
+            _songTitle.text = song.Name.Original.Replace(" (Pro)", "");
             _artistName.text = song.Artist;
             _bandScoreNotSavedMessage.gameObject.SetActive(
                 !ScoreContainer.IsBandScoreValid(PersistentState.Default.SongSpeed));

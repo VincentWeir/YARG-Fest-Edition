@@ -74,8 +74,8 @@ namespace YARG.Helpers.Extensions
                 Instrument.FiveFretCoopGuitar => "guitarCoop",
                 Instrument.Keys               => "keys",
 
-                Instrument.FourLaneDrums => "drums",
-                Instrument.ProDrums      => "realDrums",
+                Instrument.FourLaneDrums => "realDrums",
+                Instrument.ProDrums      => "trueDrums",
                 Instrument.FiveLaneDrums => "ghDrums",
 
                 Instrument.ProGuitar_17Fret => "realGuitar",
@@ -99,8 +99,8 @@ namespace YARG.Helpers.Extensions
                 "guitarCoop" => Instrument.FiveFretCoopGuitar,
                 "keys"       => Instrument.Keys,
 
-                "drums"     => Instrument.FourLaneDrums,
-                "realDrums" => Instrument.ProDrums,
+                "realDrums"     => Instrument.FourLaneDrums,
+                "trueDrums" => Instrument.ProDrums,
                 "ghDrums"   => Instrument.FiveLaneDrums,
 
                 "realGuitar" => Instrument.ProGuitar_17Fret,

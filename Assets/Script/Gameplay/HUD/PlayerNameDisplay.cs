@@ -92,7 +92,18 @@ namespace YARG.Gameplay.HUD
             // Base resource name for the instrument (e.g. "guitar", "drums", etc.)
             var baseName = currentInstrument.ToResourceName() ?? string.Empty;
 
-            // Detect drums robustly: either enum name contains "Drum" or resource name contains "drum".
+            // Handle drums specifically based on type
+            if (currentInstrument == Instrument.FourLaneDrums)
+            {
+                return $"InstrumentIcons[realDrums]";
+            }
+            
+            if (currentInstrument == Instrument.ProDrums)
+            {
+                return $"InstrumentIcons[trueDrums]";
+            }
+
+            // Detect other drum types robustly
             bool IsDrums()
             {
                 try
@@ -109,7 +120,7 @@ namespace YARG.Gameplay.HUD
                 return baseName.IndexOf("drum", StringComparison.OrdinalIgnoreCase) >= 0;
             }
 
-            // If instrument is a drum (standard/pro), always use realDrums sprite key.
+            // If instrument is a drum (other types), use realDrums sprite key.
             if (IsDrums())
             {
                 return $"InstrumentIcons[realDrums]";
