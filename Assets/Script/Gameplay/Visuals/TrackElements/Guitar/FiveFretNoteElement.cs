@@ -365,7 +365,6 @@ namespace YARG.Gameplay.Visuals
             if (sustainEndInstance != null)
             {
                 float len = (float) NoteRef.TimeLength * adjustedSpeed;
-                sustainEndInstance.transform.localPosition = new Vector3(0f, 0f, len);
             }
         }
 
