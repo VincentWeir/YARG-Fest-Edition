@@ -21,14 +21,14 @@ YARG: Fest Edition is a mod created from the original YARG rhythm game (built fr
 
 - [Disclaimer](#disclaimer)
 - [Downloading and Playing](#downloading-and-playing)
--- [Official Setlist](#official-setlist)
---- [How to Clone the Setlist Repository](#how-to-clone-the-setlist-repository)
---- [How to Refresh the Setlist Repository for New Song Batches](#how-to-refresh-the-setlist-repository-for-new-song-batches)
--- [Song Archival](#song-archival)
+ - [Official Setlist](#official-setlist)
+  - [How to Clone the Setlist Repository](#how-to-clone-the-setlist-repository)
+  - [How to Refresh the Setlist Repository for New Song Batches](#how-to-refresh-the-setlist-repository-for-new-song-batches)
+ - [Song Archival](#song-archival)
 - [General Changes from YARG to Fest Edition](#general-changes-from-yarg-to-fest-edition)
 - [Custom Songs](#custom-songs)
--- [Charting Guidelines](#charting-guidelines)
--- [Compatibilty Errors](#compatibility-errors)
+ - [Charting Guidelines](#charting-guidelines)
+ - [Compatibilty Errors](#compatibility-errors)
 
 ## Disclaimer
 
