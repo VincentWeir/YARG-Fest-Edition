@@ -164,8 +164,7 @@ There is a function built into the engine that detects if a song is not compatib
 8. **"Chord with 4+ notes detected, not allowed."**
 > *A chord with four or more notes is present on a chart meant for Pro Mode. Fortnite Festival never utilized chords with four or more notes, thus they are not to be utilized on YARG: Fest Edition.*
 9. **"Illegal triple chord detected, not allowed."**
-> *A prohibited triple chord is present on a chart meant for Pro Mode. This includes:*
+> *A prohibited triple chord is present on a chart meant for Pro Mode. Fortnite Festival never utilized these chords, thus they are not to be utilized on YARG: Fest Edition. This includes:*
 > - *A chord on Lanes 1, 2, & 5*
 > - *A chord on Lanes 1, 3, & 5*
 > - *A chord on Lanes 1, 4, & 5*
-> *Fortnite Festival never utilized these chords, thus they are not to be utilized on YARG: Fest Edition.*
