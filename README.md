@@ -59,7 +59,7 @@ It is highly recommended to clone the repository and fetch the origin with GitHu
 6. Once the repository has been successfully cloned onto your system, click the button on the top row that says "Fetch origin" (or "Pull origin") to make sure you have the latest setlist.
 7. Open YARG: Fest Edition. Click on Settings, then Songs.
 8. In "Song Folders", click "Add New Folder". Select the setlist folder in the file location of your cloned repository.
-  - *TIP: By default, repositories are usually cloned in "C:\Users\(YOUR NAME)\source\repos".*
+  - *TIP: By default, repositories are usually cloned in "C:\Users\ (YOUR NAME) \source\repos".*
 9. Click "Scan Songs". Exit out of settings and go to Quickplay.
 10. Enjoy the setlist!
 
@@ -144,28 +144,28 @@ Various changes have been made to YARG - both in the visuals and engine - in ord
 There is a function built into the engine that detects if a song is not compatible with YARG: Fest Edition. These are the following errors players may come across:
 
 1. **"Strum note detected on Pad chart."**
-  - *A Strum note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps, not Strums.*
+> *A Strum note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps, not Strums.*
 2. **"HOPO note detected on Pad chart."**
-  - *A HOPO note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps with no HOPOs.*
+> *A HOPO note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps with no HOPOs.*
 3. **"Open note detected, not allowed."**
-  - *An Open note is present on a chart. Fortnite Festival never utilized Open notes, thus they are not to be utilized on YARG: Fest Edition.*
+> *An Open note is present on a chart. Fortnite Festival never utilized Open notes, thus they are not to be utilized on YARG: Fest Edition.*
 4. **"Chord with 3+ notes detected on Pad chart."**
-  - *A chord with three or more notes is present on a chart meant for Pad Mode. These chords are not allowed as they are unable to be hit properly on a regular controller.*
+> *A chord with three or more notes is present on a chart meant for Pad Mode. These chords are not allowed as they are unable to be hit properly on a regular controller.*
 5. **"Illegal chord detected on Pad chart."**
-  - *A prohibited chord is present on a chart meant for Pad Mode. This includes:*
-    - *A chord on Lanes 1 & 2*
-    - *A chord on Lanes 3 & 4*
-    - *A chord on Lanes 3 & 5*
-    - *A chord on Lanes 4 & 5*
+> *A prohibited chord is present on a chart meant for Pad Mode. This includes:*
+> - *A chord on Lanes 1 & 2*
+> - *A chord on Lanes 3 & 4*
+> - *A chord on Lanes 3 & 5*
+> - *A chord on Lanes 4 & 5*
 6. **"Fifth lane note on non-Expert Pad chart."**
-  - *A note is present in the fifth lane on Easy, Medium, and/or Hard on a chart meant for Pad Mode. These difficulties have four lanes instead of the five lanes on Expert.*
+> *A note is present in the fifth lane on Easy, Medium, and/or Hard on a chart meant for Pad Mode. These difficulties have four lanes instead of the five lanes on Expert.*
 7. **"Tap note detected on Pro chart."**
-  - *A Tap note is present on a chart meant for Pro Mode. All notes on Pro charts should be Strums and HOPOs, not Taps.*
+> *A Tap note is present on a chart meant for Pro Mode. All notes on Pro charts should be Strums and HOPOs, not Taps.*
 8. **"Chord with 4+ notes detected, not allowed."**
-  - *A chord with four or more notes is present on a chart meant for Pro Mode. Fortnite Festival never utilized chords with four or more notes, thus they are not to be utilized on YARG: Fest Edition.*
+> *A chord with four or more notes is present on a chart meant for Pro Mode. Fortnite Festival never utilized chords with four or more notes, thus they are not to be utilized on YARG: Fest Edition.*
 9. **"Illegal triple chord detected, not allowed."**
-  - *A prohibited triple chord is present on a chart meant for Pro Mode. This includes:*
-    - *A chord on Lanes 1, 2, & 5*
-    - *A chord on Lanes 1, 3, & 5*
-    - *A chord on Lanes 1, 4, & 5*
-  - *Fortnite Festival never utilized these chords, thus they are not to be utilized on YARG: Fest Edition.*
+> *A prohibited triple chord is present on a chart meant for Pro Mode. This includes:*
+> - *A chord on Lanes 1, 2, & 5*
+> - *A chord on Lanes 1, 3, & 5*
+> - *A chord on Lanes 1, 4, & 5*
+> *Fortnite Festival never utilized these chords, thus they are not to be utilized on YARG: Fest Edition.*
