@@ -13,7 +13,7 @@
   </a>
 </p>
 
-[OFFICIAL SETLIST](https://github.com/VincentWeir/YARGFest-OfficialSongs) /
+[OFFICIAL SETLIST](https://github.com/VincentWeir/YARGFest-OfficialSetlist) /
 [ORIGINAL VERSION OF YARG](https://github.com/YARC-Official/YARG)
 
 ---
@@ -52,13 +52,13 @@ YARG: Fest Edition is unable to be downloaded through the YARC Launcher. However
 
 ### Official Setlist
 
-YARG: Fest Edition has its own official setlist produced specifically for it in its own repository! Songs are expected to be released in weekly batches every Saturday at 12AM EST.
-It is highly recommended to clone the repository and fetch the origin with GitHub Desktop when new song batches are released.
+YARG: Fest Edition has its own [official setlist](https://github.com/VincentWeir/YARGFest-OfficialSetlist) produced specifically for it in its own repository! Songs are expected to be released in weekly batches every Saturday at 12AM EST.
+It is highly recommended to clone the repository and fetch the origin with [GitHub Desktop](https://desktop.github.com/download/) when new song batches are released.
 
 #### How to Clone the Setlist Repository
 
-1. Download the GitHub Desktop application [here](https://desktop.github.com/download/) and set it up.
-2. Go to the official setlist repository [here](https://github.com/VincentWeir/YARGFest-OfficialSongs).
+1. Download the [GitHub Desktop application](https://desktop.github.com/download/) and set it up.
+2. Go to the [official setlist repository](https://github.com/VincentWeir/YARGFest-OfficialSetlist).
 3. Click the green button that says "<> Code". Under "HTTPS", copy the URL or click the icon on the right of the URL (it should say "Copy URL to clipboard" when hovered over).
 4. In GitHub Desktop, go to File and click "Clone repository...".
 5. Click on "URL". Paste the repository link you copied from Step 3, then click "Clone".
