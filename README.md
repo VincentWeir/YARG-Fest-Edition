@@ -13,6 +13,11 @@
   </a>
 </p>
 
+<p align="center">
+  [OFFICIAL SETLIST](https://github.com/VincentWeir/YARGFest-OfficialSongs)
+  [ORIGINAL VERSION OF YARG](https://github.com/YARC-Official/YARG)
+</p>
+
 ---
 
 YARG: Fest Edition is a mod created from the original YARG rhythm game (built from v13.1). The aim is to create a new, but familiar, experience for players to be able to play and create songs using a framework that works like Fortnite Festival.
@@ -43,6 +48,9 @@ YARG: Fest Edition is a mod created from the original YARG rhythm game (built fr
 
 **Download YARG: Fest Edition through the [Releases](https://github.com/VincentWeir/YARG-Fest-Edition/releases/) tab.** Once downloaded, unzip the file and click the application to run it!
 YARG: Fest Edition is unable to be downloaded through the YARC Launcher. However, you can download and play the original version of YARG through the YARC Launcher [here](https://github.com/YARC-Official/YARC-Launcher/releases/)!
+
+> [!IMPORTANT]
+> If there are any suggestions or issues regarding the game or official setlist, please put them in [this Google Form](https://forms.gle/72hTusE3i3utg7vt9)!
 
 ### Official Setlist
 
@@ -119,6 +127,8 @@ Various changes have been made to YARG - both in the visuals and engine - in ord
 > - Drums: Chart on "Rhythm" or "Rhythm Guitar".
 > - Pro Drums: Chart on "Drums".
 > - Vocals: Chart on "Keys".
+>
+> ALSO: Make sure for Pro Mode charts that " (Pro)" is at the end of the song title, otherwise when the mode is switched to Pro Mode, it will not properly display.
 
 ### Charting Guidelines
 
@@ -129,6 +139,7 @@ Various changes have been made to YARG - both in the visuals and engine - in ord
 - If a song doesn't have lyrics, but multiple Lead instrument(s), chart the extra instrument(s) on Vocals.
   - *Fortnite Festival has a long history of doing this on songs that don't have lyrics.*
 - Don't make the difficulty rating 0 or more than 7.
+- For album art, try to find one that's not too inappropriate. If an official album art cannot be found, a photo of the artist or the artist's logo will suffice.
 - **Certain phrases and words are highly discouraged from being used (with censoring or altered lyrics recommended), including:**
   - Strong language, like the f-word and s-word.
     - *The s-word is sometimes allowed, depending on the context of how it's used.*
