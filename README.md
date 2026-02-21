@@ -13,10 +13,8 @@
   </a>
 </p>
 
-<p align="center">
-  [OFFICIAL SETLIST](https://github.com/VincentWeir/YARGFest-OfficialSongs)
-  [ORIGINAL VERSION OF YARG](https://github.com/YARC-Official/YARG)
-</p>
+[OFFICIAL SETLIST](https://github.com/VincentWeir/YARGFest-OfficialSongs) /
+[ORIGINAL VERSION OF YARG](https://github.com/YARC-Official/YARG)
 
 ---
 
