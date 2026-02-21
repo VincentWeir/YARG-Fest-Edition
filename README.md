@@ -32,6 +32,7 @@ YARG: Fest Edition is a mod created from the original YARG rhythm game (built fr
 - [Custom Songs](#custom-songs)
   - [Charting Guidelines](#charting-guidelines)
   - [Compatibilty Errors](#compatibility-errors)
+- [Known Issues](#known-issues)
 
 ## Disclaimer
 
@@ -177,3 +178,8 @@ There is a function built into the engine that detects if a song is not compatib
 > - *A chord on Lanes 1, 2, & 5*
 > - *A chord on Lanes 1, 3, & 5*
 > - *A chord on Lanes 1, 4, & 5*
+
+## Known Issues
+
+- There is an issue causing inconsistent replay results, so replays and the History menu are disabled. A fix is in development.
+- Pro Vocals/Microphone controls are currently disabled as they aren't being developed for the official setlist. Should it be reenabled, a notification will be sent out on social media.
