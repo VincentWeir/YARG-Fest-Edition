@@ -75,6 +75,8 @@ namespace YARG.Gameplay.Player
 
         public float WhammyFactor { get; private set; }
 
+        private FiveFretNoteElement _fiveFretNoteElement;
+
         private int _sustainCount;
 
         private SongStem _stem;
@@ -105,10 +107,16 @@ namespace YARG.Gameplay.Player
                 StarMultiplierThresholds = BassStarMultiplierThresholds;
             }
 
+            bool isKeys = Player.Profile.CurrentInstrument == Instrument.Keys;
+            if (isKeys)
+            {
+                StarMultiplierThresholds = BassStarMultiplierThresholds;
+            }
+
             if (!Player.IsReplay)
             {
                 // Create the engine params from the engine preset
-                EngineParams = Player.EnginePreset.FiveFretGuitar.Create(StarMultiplierThresholds, isBass);
+                EngineParams = Player.EnginePreset.FiveFretGuitar.Create(StarMultiplierThresholds, isBass, isKeys);
                 //EngineParams = EnginePreset.Precision.FiveFretGuitar.Create(StarMultiplierThresholds, isBass);
             }
             else
@@ -148,7 +156,6 @@ namespace YARG.Gameplay.Player
 
             StarScoreThresholds = PopulateStarScoreThresholds(StarMultiplierThresholds, Engine.BaseScore);
 
-            IndicatorStripes.Initialize(Player.EnginePreset.FiveFretGuitar);
             _fretArray.Initialize(
                 Player.ThemePreset,
                 Player.Profile.GameMode,

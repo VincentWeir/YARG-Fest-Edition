@@ -81,7 +81,7 @@ namespace YARG.Menu.MusicLibrary
                 }
                 else
                 {
-                    ringCount = 1 + (uint) ((values.Intensity - 1) % 5);
+                    ringCount = 1 + (uint) ((values.Intensity - 1) % 7);
                 }
             }
 
@@ -93,13 +93,13 @@ namespace YARG.Menu.MusicLibrary
             {
                 case DifficultyRingMode.Classic:
                 {
-                    if (values.Intensity > 5)
+                    if (values.Intensity > 7)
                     {
-                        ringCount = 5;
+                        ringCount = 7;
                         ringColor = _ringRedColor;
                     }
 
-                    _intensityNumber.text = values.Intensity > 6
+                    _intensityNumber.text = values.Intensity > 8
                         ? values.Intensity.ToString()
                         : string.Empty;
                     break;
@@ -134,7 +134,7 @@ namespace YARG.Menu.MusicLibrary
             }
 
             // Set ring sprite properties
-            float fill = ringCount / 5f;
+            float fill = ringCount / 7f;
             _ringSprite.fillAmount = fill;
             _ringBase.fillAmount = 1 - fill;
             _ringSprite.color = ringColor;

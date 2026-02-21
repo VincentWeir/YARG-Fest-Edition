@@ -47,6 +47,7 @@ namespace YARG.Gameplay.HUD
                 } + "\n";
             }
 
+            finalText = finalText.Replace("(Pro)", "").Trim();
             _text.text = finalText;
         }
 

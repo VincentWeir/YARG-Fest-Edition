@@ -80,7 +80,7 @@ namespace YARG.Gameplay.HUD
                     uint measureTick = syncTrack.TimeToMeasureTick(currentTime);
                     uint endMeasureTick = syncTrack.TimeToMeasureTick(endTime);
                     uint remainingMeasures = (endMeasureTick - measureTick) / syncTrack.MeasureResolution;
-                    _countdownText.SetText(remainingMeasures);
+                    _countdownText.SetText(remainingMeasures + 1);
                     break;
                 }
             }

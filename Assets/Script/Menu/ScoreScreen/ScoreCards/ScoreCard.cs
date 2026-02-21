@@ -9,6 +9,7 @@ using YARG.Core.Game;
 using YARG.Helpers.Extensions;
 using YARG.Localization;
 using YARG.Player;
+using YARG.Menu.MusicLibrary;
 
 namespace YARG.Menu.ScoreScreen
 {
@@ -129,9 +130,10 @@ namespace YARG.Menu.ScoreScreen
             _notesMissed.text = WrapWithColor(Stats.NotesMissed);
             _starpowerPhrases.text = $"{WrapWithColor(Stats.StarPowerPhrasesHit)} / {Stats.TotalStarPowerPhrases}";
 
-            // Set background icon
+            // Set background icon - UPDATED TO HANDLE PRO MODE
+            string iconResourceName = GetInstrumentIconResourceName();
             _instrumentIcon.sprite = Addressables
-                .LoadAssetAsync<Sprite>($"InstrumentIcons[{Player.Profile.CurrentInstrument.ToResourceName()}]")
+                .LoadAssetAsync<Sprite>($"InstrumentIcons[{iconResourceName}]")
                 .WaitForCompletion();
 
             // Set engine preset icons
@@ -150,22 +152,46 @@ namespace YARG.Menu.ScoreScreen
             }
         }
 
-        private void ShowTag(string tagText)
+        private string GetInstrumentIconResourceName()
         {
-            _tagGameObject.SetActive(true);
-            _tagText.text = tagText;
+            var instrument = Player.Profile.CurrentInstrument;
+            var resourceName = instrument.ToResourceName();
+            
+            // Check if we need to use pro mode icons based on MusicLibraryMenu.isProMode
+            if (MusicLibraryMenu.isProMode)
+            {
+                // Map guitar to realGuitar in pro mode
+                if (instrument == Instrument.FiveFretGuitar)
+                {
+                    return "realGuitar";
+                }
+                // Map bass to realBass in pro mode
+                else if (instrument == Instrument.FiveFretBass)
+                {
+                    return "realBass";
+                }
+            }
+            
+            // For trueDrums: the EliteDrums mapping is now handled in ToResourceName()
+            // EliteDrums should show as trueDrums (already handled by the ToResourceName update)
+            
+            return resourceName;
         }
 
-        private void HideTag()
+        protected void ShowTag(string text)
+        {
+            _tagGameObject.SetActive(true);
+            _tagText.text = text;
+        }
+
+        protected void HideTag()
         {
             _tagGameObject.SetActive(false);
         }
 
-        protected string WrapWithColor(object s)
+        protected static string WrapWithColor(object text)
         {
-            return
-                $"<font-weight=700><color=#{ColorUtility.ToHtmlStringRGB(_colorizer.CurrentColor)}>" +
-                $"{s}</color></font-weight>";
+            return $"<color=#A7A7A7>{text}</color>";
         }
     }
 }

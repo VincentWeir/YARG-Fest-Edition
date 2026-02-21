@@ -1,30 +1,36 @@
 <p align="center">
   <picture>
-    <img alt="YARG Gameplay" src="./Images/Banner.png" width="100%">
+    <img alt="YARG Gameplay" src="./Images/Logo_FestEdition_White.png" width="100%">
   </picture>
 </p>
 
 <p align="center">
-    <i>YARG (a.k.a. Yet Another Rhythm Game)</i>
-</p>
-
-<p align="center">
-  <a href="https://twitter.com/YARGGame">
+  <a href="https://x.com/YARGFestEdition">
     <img src="./Images/Socials/Twitter.png" width="38px" height="38px" alt="Twitter">
   </a>
-  <a href="https://discord.gg/sqpu4R552r">
+  <a href="https://discord.com/invite/A42tacVmaa">
     <img src="./Images/Socials/Discord.png" height="38px" width="38px" alt="Discord">
-  </a>
-  <a href="https://reddit.com/r/yarg">
-    <img src="./Images/Socials/Reddit.png" height="38px" width="38px" alt="Discord">
   </a>
 </p>
 
 ---
 
-YARG (a.k.a. Yet Another Rhythm Game) is a free, open-source, plastic guitar game that is still in development. It supports guitar (five fret), drums (plastic or e-kit), vocals, pro-guitar, and more! YARG is still in active development, so there may be bugs and missing features.
+YARG: Fest Edition is a mod created from the original YARG rhythm game (built from v13.1). The aim is to create a new, but familiar, experience for players to be able to play and create songs using a framework that works like Fortnite Festival.
 
-## 👉 Disclaimer
+## Table of Contents
+
+- [Disclaimer](#disclaimer)
+- [Downloading and Playing](#downloading-and-playing)
+  - [Official Setlist](#official-setlist)
+    - [How to Clone the Setlist Repository](#how-to-clone-the-setlist-repository)
+    - [How to Refresh the Setlist Repository for New Song Batches](#how-to-refresh-the-setlist-repository-for-new-song-batches)
+  - [Song Archival](#song-archival)
+- [General Changes from YARG to Fest Edition](#general-changes-from-yarg-to-fest-edition)
+- [Custom Songs](#custom-songs)
+  - [Charting Guidelines](#charting-guidelines)
+  - [Compatibilty Errors](#compatibility-errors)
+
+## Disclaimer
 
 > [!IMPORTANT]
 > **YARG stands firmly against all forms of piracy.** We neither support nor endorse piracy, as it is a violation of copyright law with serious legal consequences. Our platform's importable content—designed for creators to share their work and for educational purposes—does not justify or excuse piracy.
@@ -33,211 +39,132 @@ YARG (a.k.a. Yet Another Rhythm Game) is a free, open-source, plastic guitar gam
 >
 > YARG stands for "Yet Another Rhythm Game" and NOT for pirates.
 
-## 📃 Table of Contents
+## Downloading and Playing
 
-- [👉 Disclaimer](#-disclaimer)
-- [📃 Table of Contents](#-table-of-contents)
-- [📥 Downloading and Playing](#-downloading-and-playing)
-  - [YARC Launcher (All Platforms)](#yarc-launcher-all-platforms)
-  - [Linux](#linux)
-- [🔨 Building/Contributing](#-buildingcontributing)
-  - [Setup Instructions](#setup-instructions)
-  - [Unity YAML Merge Tool](#unity-yaml-merge-tool)
-- [✍️ Contributing and Credits](#️-contributing-and-credits)
-- [🛡️ License](#️-license)
-- [🧰 External Licenses](#-external-licenses)
-- [📦 External Assets and Libraries](#-external-assets-and-libraries)
-- [💸 Donate](#-donate)
+**Download YARG: Fest Edition through the [Releases](https://github.com/VincentWeir/YARG-Fest-Edition/releases/) tab.** Once downloaded, unzip the file and click the application to run it!
+YARG: Fest Edition is unable to be downloaded through the YARC Launcher. However, you can download and play the original version of YARG through the YARC Launcher [here](https://github.com/YARC-Official/YARC-Launcher/releases/)!
 
-## 📥 Downloading and Playing
+### Official Setlist
 
-**It is recommended you download YARG via the [YARC Launcher](https://github.com/YARC-Official/YARC-Launcher/releases/).** Downloading the portable option is not recommended as some features may not work.
+YARG: Fest Edition has its own official setlist produced specifically for it in its own repository! Songs are expected to be released in weekly batches every Saturday at 12AM EST.
+It is highly recommended to clone the repository and fetch the origin with GitHub Desktop when new song batches are released.
 
-### YARC Launcher (All Platforms)
+#### How to Clone the Setlist Repository
+
+1. Download the GitHub Desktop application [here](https://desktop.github.com/download/) and set it up.
+2. Go to the official setlist repository [here](https://github.com/VincentWeir/YARGFest-OfficialSongs).
+3. Click the green button that says "<> Code". Under "HTTPS", copy the URL or click the icon on the right of the URL (it should say "Copy URL to clipboard" when hovered over).
+4. In GitHub Desktop, go to File and click "Clone repository...".
+5. Click on "URL". Paste the repository link you copied from Step 3, then click "Clone".
+6. Once the repository has been successfully cloned onto your system, click the button on the top row that says "Fetch origin" (or "Pull origin") to make sure you have the latest setlist.
+7. Open YARG: Fest Edition. Click on Settings, then Songs.
+8. In "Song Folders", click "Add New Folder". Select the setlist folder in the file location of your cloned repository.
+  - *TIP: By default, repositories are usually cloned in "C:\Users\ (YOUR NAME) \source\repos".*
+9. Click "Scan Songs". Exit out of settings and go to Quickplay.
+10. Enjoy the setlist!
+
+#### How to Refresh the Setlist Repository for New Song Batches
+
+1. Open the GitHub Desktop Application.
+2. With the setlist repository selected, click on "Fetch origin", then "Pull origin".
+  - *GitHub Desktop might fetch the origin automatically and simply say "Pull origin".*
+3. Open YARG: Fest Edition. Click on Settings, then Songs.
+4. Click "Scan Songs". Exit out of settings and go to Quickplay.
+5. Enjoy the new song batch(es)!
+
+### Song Archival
+
+If a song or songs in YARG: Fest Edition is selected and released for Fortnite Festival, then the song(s) will be archived and removed from the official setlist on the next song batch. Scores should still be saved after archival.
+
+## General Changes from YARG to Fest Edition
+
+Various changes have been made to YARG - both in the visuals and engine - in order to make way for the Fest Edition mod. This includes but not limited to:
+- **A switch between Pad Mode and Pro Mode in the Music Library.**
+  - *Pad Mode charts are made for controllers and keyboards; Pro Mode charts are made for plastic instrument peripherals.*
+- **Lift Notes on Pad Mode.**
+  - *These little guys spawn at the end of short, invisible sustain lines. In order for them to appear, sustain lines have to be half a beat or shorter.*
+- **Two-way anchoring on Pad Mode (a.k.a. Drunk Mode).**
+- **Star Power (a.k.a. Overdrive activation) threshold reduced from 50% to 25%.**
+- **Lane seperator between Lanes 2 & 3 for Pad Mode.**
+- **Four lane highways on non-Expert charts for Pad Mode.**
+- **Note mesh changes:**
+  - HOPOs now look like Tap notes.
+    - *This makes the notes more in line with how they appear in Fortnite Festival.*
+  - Taps now look like Strum notes.
+    - *Since Strum and Tap notes look the same in Fortnite Festival, this change was necessary.*
+- **Instrument term changes:**
+  - Guitar = Lead/Pro Lead
+  - Bass = Bass/Pro Bass
+  - Rhythm = Drums
+  - Keys = Vocals
+  - Four Lane Drums = Pro Snare
+- **Instrument icons changed.**
+  - *On Pad Mode, the icons are arranged by
+- **Album title and vignette removed from album artwork**
+  - *Fortnite Festival never showed the name of the album in-game and the vignette impeded on the quality of the album artwork. You are still able to sort and search songs by album title though.*
+- **Max displayed difficulty raised from 5 to 7.**
+- **Vocals (on Pad Mode) has a max multiplier of 6x.**
+- **All notes in a chord are counted individually instead of one whole note.**
+  - *Fortnite Festival counts notes individually, so this change seemed necessary.*
+- **Countdown timer is bumped up by 1 when set to Measures.**
+
+## Custom Songs
+
+**Players are perfectly allowed to create their own songs for YARG: Fest Edition.** The [Moonscraper Chart Editor software](https://github.com/FireFox2000000/Moonscraper-Chart-Editor) is highly recommended; even though Moonscraper is built for Clone Hero, songs charted for that game are 100% compatible with YARG and Fest Edition. Reaper is also a good chart editor, albeit it's paid software.
 
 > [!IMPORTANT]
-> If you are on Linux, there are some additional things you need to do in order for controllers to work. See the Linux section for more info.
+> **Make sure when you are charting for YARG: Fest Edition, you chart the appropriate parts on these instruments:**
+> - Lead/Pro Lead: Chart on "Guitar".
+> - Bass/Pro Bass: Chart on "Bass".
+> - Drums: Chart on "Rhythm" or "Rhythm Guitar".
+> - Pro Drums: Chart on "Drums".
+> - Vocals: Chart on "Keys".
 
-1. Go to the YARC Launcher releases page, [here](https://github.com/YARC-Official/YARC-Launcher/releases/).
-2. Click on the download option for your operating system.
-3. You may get a "this application is not safe" warning depending on your operating system. This is a false positive. [Click here](https://github.com/YARC-Official/YARC-Launcher#-antivirus-warnings) to learn more.
-4. Once in the launcher, click on "YARG" on the left hand side.
-5. Then, click on green "Update Stable" button.
-6. You will be prompted to choose an install folder. If you don't know what folder to choose, just click "Okay". Please ensure that the folder you select is empty.
-7. Wait for it to finish installing...
-8. Finally, press "Play Stable"!
-9. Additionally, if you want some songs, install "YARG Setlist" which is also on the left in the YARC Launcher.
+### Charting Guidelines
 
-### Linux
-
-There are some dependencies that will be needed in order for HID devices (such as PS3 and Wii instruments) to work.
-
-1. Install `hidapi` and `libudev`:
-   - (Package names may differ depending on package repositories.)
-   - On apt-based distros (such as Ubuntu or Debian), use `sudo apt install libhidapi-hidraw0 libudev1`.
-   - On pacman-based distros (such as Arch Linux), use `pacman -S hidapi systemd-libs`.
-   - On Fedora, use `dnf install hidapi systemd-libs`.
-2. Finally, create a new udev rules file called `69-hid.rules` inside of `/etc/udev/rules.d/` or `/usr/lib/udev/rules.d/`, with the following contents:
-  ```
-  KERNEL=="hidraw*", TAG+="uaccess"
-  ```
-  - Without this file, YARG will not be able to access HID devices without special permissions such as being run with `sudo`, which is not recommended.
-  - The file name may differ if desired, but it must come before `73-seat-late.rules`!
-3. Reboot your system to apply the new udev rule, then you should be all good to go!
-
-## 🔨 Building/Contributing
+- To chart Lift Notes, make a sustain line from the note(s) that's shorter or equal to half a beat, regardless of BPM. This is only for Pad charts.
+  - *If a sustain line is longer than half a beat, the note will have a regular sustain line and a Lift Note will not appear.*
+- Chart patterns on Pad Mode that are able to be hit on a regular controller (e.g. wall of notes on one side with back and forth on the other side, instead of a zig zag).
+- Make sure Star Power/Overdrive phases aren't too much or too little. The rule of thumb is one Star Power/Overdrive phase every ~15 seconds of notes.
+- If a song doesn't have lyrics, but multiple Lead instrument(s), chart the extra instrument(s) on Vocals.
+  - *Fortnite Festival has a long history of doing this on songs that don't have lyrics.*
+- Don't make the difficulty rating 0 or more than 7.
+- **Certain phrases and words are highly discouraged from being used (with censoring or altered lyrics recommended), including:**
+  - Strong language, like the f-word and s-word.
+    - *The s-word is sometimes allowed, depending on the context of how it's used.*
+  - Explicit references to drugs and sexual themes.
+  - Slurs.
 
 > [!IMPORTANT]
-> #### ⚠️ If you wish to contribute, use the `dev` branch. Your PR will NOT be merged if it's on `master`. ⚠️
+> It is heavily recommended to NOT chart songs that are available in Fortnite Festival for obvious reasons.
+> Please support Fortnite Festival and the available songs by purchasing them in the game's Shop.
 
-### Setup Instructions
+### Compatibility Errors
 
-> [!WARNING]
->
-> If you would like to build the game yourself, please follow these instructions.
->
-> If you don't follow these instructions, it is possible that **YOU WILL NOT BE ABLE TO RUN THE GAME**.
+There is a function built into the engine that detects if a song is not compatible with YARG: Fest Edition. These are the following errors players may come across:
 
-1. If you are planning to contribute, first make a fork of the project.
-   - Be sure to *uncheck* the option to only include the `master` branch! You will not be able to set things up correctly otherwise, as the `dev` branch will not be included in your fork.
-
-   ![](Images/Contributing/Include_All_Branches.png)
-
-2. Make sure you have the latest version of [Blender](https://www.blender.org/) installed. This is for loading models, even if you don't plan on editing them.
-3. Clone the repository. If you are not familiar with git, [GitHub Desktop](https://desktop.github.com/) or [Visual Studio Code](https://code.visualstudio.com/) plus the [GitLens extension](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) are both good GUI options. If, however, you want to use the command-line:
-   1. Download [Git](https://git-scm.com/downloads). Be sure it is added to system path.
-   2. Also download [Git LFS](https://git-lfs.com), and install it with the `git lfs install` command.
-   3. Open the command prompt in the directory you want to store the repository.
-   4. Clone the project repository:
-   5. Type in `git clone -b dev --recursive <repository url>.git`, replacing `<repository url>` with either:
-      - your fork's URL if you made one, or
-      - the main repository's URL (`https://github.com/YARC-Official/YARG`) if you just want to build the game.
-      - A complete example using the main repository's URL is `git clone -b dev --recursive https://github.com/YARC-Official/YARG.git`.
-   6. Because YARG contains submodules, you may need to do `git submodule update` when things get updated.
-4. Install Unity 2021.3.36f1. Easiest method will be using Unity Hub:
-   1. Download and install [Unity Hub](https://unity.com/download).
-   2. Sign-in/create an account with a personal license (free).
-   3. In Unity Hub, hit the arrow next to Add and select `Add project from disk`, then select the folder you cloned YARG to.
-   4. Click on the added entry for YARG. It will warn you about a missing editor version, select 2021.3.36f1 and install it.
-      - Unselect Visual Studio in the list of modules if you wish to use another editor or already have it installed.
-5. Install the [.NET SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks). This is required to develop and build the submodules.
-   - You will need the SDK specifically, not the runtime!
-6. Open the project in Unity. When prompted about Safe Mode, click "Ignore".
-   - Do *not* enter Safe Mode, otherwise scripts necessary to build/install dependencies will not run, and the errors will not resolve.
-
-   ![](Images/Contributing/unityignore.png)
-
-7. Click on `NuGet` on the top menu bar, then click on `Restore Packages`.
-   - This should be performed automatically when Unity starts up, but it can be performend manually if needed.
-8. You're ready to go!
-
-### Linux
-
-On certain distributions of Linux, Unity 2021.3.36f1 editor is broken and the YARG project (or any other project for that matter) cannot be imported. When trying to open the project, Unity will freeze during the import process.
-
-   ![](Images/Contributing/Unity_Project_Import_Hang.png)
-
-To fix this issue, follow the steps below:
-
-1. Locate the Editor installation directory. By default, it is `${HOME}/Unity/Hub/Editor`, but it can be reconfigured in Unity Hub.
-2. Enter the `2021.3.36f1/Editor/Data` directory.
-3. Rename the `bee_backend` executable file to `bee_backend_real`.
-4. Create a new text file named `bee_backend`.
-5. Paste the following script into the `bee_backend` file:
-  ```bash
-  #!/bin/bash
-
-  args=("$@")
-  for ((i=0; i<"${#args[@]}"; ++i))
-  do
-      case ${args[i]} in
-          --stdin-canary)
-              unset args[i];
-              break;;
-      esac
-  done
-  ${0}_real "${args[@]}"
-  ```
-6. Launching the project should now work properly.
-
-### Unity YAML Merge Tool
-
-Sometimes merge conflicts may happen between Unity scenes. These can be much more difficult to resolve than other merge conflicts, so we recommend using the Unity YAML merge tool to resolve these instead of attempting to do so manually.
-
-Setup:
-1. Open a command prompt to the repository (on VS Code you can do Terminal > New Terminal)
-2. Type in `git config --local --edit`
-3. In the file that gets opened, go to the bottom and paste this in:
-  ```
-  [merge]
-      tool = unityyamlmerge
-  [mergetool "unityyamlmerge"]
-      trustExitCode = false
-      cmd = 'C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.21f1\\Editor\\Data\\Tools\\UnityYAMLMerge.exe' merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED"
-  ```
-  - You may need to change the file path depending on where you installed Unity to.
-4. Save and close the file.
-
-Resolving conflicts:
-1. Start the merge/cherry-pick which is causing conflicts.
-2. If the conflict doesn't resolve automatically, open the command prompt and use `git merge-tool`.
-3. Verify that the conflict was resolved correctly, then commit/continue the merge.
-
-## ✍️ Contributing and Credits
-
-If you want to contribute, please feel free! It's recommended you join [our Discord](https://discord.gg/sqpu4R552r) so we can provide feedback quickly.
-
-In order to get your name added to the YARG credits, you need to first contribute to any of the following:
-* YARG
-* The Official Setlist and/or DLC
-* YARC Launcher
-* OpenSource
-* The community (community moderator, socials manager, etc).
-
-After that, you must create a pull request on [this repo](https://github.com/YARC-Official/Contributors) to get your name added. If you need help with this, feel free to ask in our Discord!
-
-## 🛡️ License
-
-YARG is licensed under the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (or later) - see the [`LICENSE`](LICENSE) file for details.
-
-## 🧰 External Licenses
-
-Some libraries/assets are **packaged** with the source code have licenses that must be included.
-
-| Library | License |
-| --- | --- |
-| [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity) | [MIT](https://github.com/GlitchEnzo/NuGetForUnity/blob/master/LICENSE)
-| [Unity Standalone File Browser](https://github.com/gkngkc/UnityStandaloneFileBrowser) | [MIT](https://github.com/gkngkc/UnityStandaloneFileBrowser/blob/master/LICENSE.txt)
-| [Discord GameSDK](https://discord.com/developers/docs/game-sdk/sdk-starter-guide) | Licenseless
-| [Lucide](https://lucide.dev/) | [ISC](https://lucide.dev/license)
-| [Unbounded](https://fonts.google.com/specimen/Unbounded), [Barlow](https://fonts.google.com/specimen/Barlow), [Noto Sans Japanese](https://fonts.google.com/noto/specimen/Noto+Sans+JP) and [Red Hat Display](https://fonts.google.com/specimen/Red+Hat+Display) | [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
-| [PolyHaven](https://polyhaven.com/) | [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
-| [BASS](https://www.un4seen.com/) | [Proprietary](https://www.un4seen.com/) (free for non-commercial use)
-| [Haukcode.sACN](https://github.com/HakanL/Haukcode.sACN) | [MIT](https://github.com/HakanL/Haukcode.sACN/blob/master/LICENSE) |
-
-Please note that other libraries are **not** directly packaged within the source code, and are to be installed by NuGet, Unity's packaged manager, or via a Git submodule.
-
-## 📦 External Assets and Libraries
-
-These are assets that are installed by NuGet, Unity's packaged manager, or via a Git submodule. These have varying licenses, but can all be downloaded/accessed by the links given.
-
-| Link | Type | Use |
-| --- | --- | --- |
-| [YARG.Core](https://github.com/YARC-Official/YARG.Core) | Library | Provides most of YARG's backend (engine, replays, etc.)
-| [PlasticBand](https://github.com/TheNathannator/PlasticBand) | Reference | Controller Support Info
-| [GuitarGame_ChartFormats](https://github.com/TheNathannator/GuitarGame_ChartFormats) | Reference | File Format Documentation
-| [PlasticBand-Unity](https://github.com/TheNathannator/PlasticBand-Unity) | Library | GH/RB Controller Support
-| [HIDrogen](https://github.com/TheNathannator/HIDrogen) | Library | Linux HID Controller Support
-| [EasySharpIni](https://www.nuget.org/packages/EasySharpIni/) | Library | Parsing `song.ini` Files
-| [DryWetMidi](https://www.nuget.org/packages/Melanchall.DryWetMidi) | Library | Parsing `.mid` Files
-| [Minis](https://github.com/keijiro/Minis/tree/master) | Library | MIDI Input for Unity
-| [DOTween](https://github.com/Demigiant/dotween) | Library | Animation Utility
-| [UniTask](https://github.com/Cysharp/UniTask) | Library | Async Library
-| [unity-toolbar-extender](https://github.com/marijnz/unity-toolbar-extender/) | Library | Unity Editor Utility
-| [SoftMaskForUGUI](https://github.com/mob-sakai/SoftMaskForUGUI) | Library | UI Utility
-| [Unity-Dependencies-Hunter](https://github.com/AlexeyPerov/Unity-Dependencies-Hunter) | Library | Unity Editor Utility
-| [tmpro-dynamic-data-cleaner](https://github.com/STARasGAMES/tmpro-dynamic-data-cleaner) | Library | Prevent Git Change Spam
-
-## 💸 Donate
-
-Some people have expressed interest in donating. This is an open-source project and therefore donating is not required. If you do want to still help out, spread the word or contribute!
+1. **"Strum note detected on Pad chart."**
+> *A Strum note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps, not Strums.*
+2. **"HOPO note detected on Pad chart."**
+> *A HOPO note is present on a chart meant for Pad Mode. All notes on Pad charts should be Taps with no HOPOs.*
+3. **"Open note detected, not allowed."**
+> *An Open note is present on a chart. Fortnite Festival never utilized Open notes, thus they are not to be utilized on YARG: Fest Edition.*
+4. **"Chord with 3+ notes detected on Pad chart."**
+> *A chord with three or more notes is present on a chart meant for Pad Mode. These chords are not allowed as they are unable to be hit properly on a regular controller.*
+5. **"Illegal chord detected on Pad chart."**
+> *A prohibited chord is present on a chart meant for Pad Mode. This includes:*
+> - *A chord on Lanes 1 & 2*
+> - *A chord on Lanes 3 & 4*
+> - *A chord on Lanes 3 & 5*
+> - *A chord on Lanes 4 & 5*
+6. **"Fifth lane note on non-Expert Pad chart."**
+> *A note is present in the fifth lane on Easy, Medium, and/or Hard on a chart meant for Pad Mode. These difficulties have four lanes instead of the five lanes on Expert.*
+7. **"Tap note detected on Pro chart."**
+> *A Tap note is present on a chart meant for Pro Mode. All notes on Pro charts should be Strums and HOPOs, not Taps.*
+8. **"Chord with 4+ notes detected, not allowed."**
+> *A chord with four or more notes is present on a chart meant for Pro Mode. Fortnite Festival never utilized chords with four or more notes, thus they are not to be utilized on YARG: Fest Edition.*
+9. **"Illegal triple chord detected, not allowed."**
+> *A prohibited triple chord is present on a chart meant for Pro Mode. Fortnite Festival never utilized these chords, thus they are not to be utilized on YARG: Fest Edition. This includes:*
+> - *A chord on Lanes 1, 2, & 5*
+> - *A chord on Lanes 1, 3, & 5*
+> - *A chord on Lanes 1, 4, & 5*

@@ -50,6 +50,108 @@ MonoBehaviour:
   _trackWidth: 2
   _leftKickFretPosition: {fileID: 67120744706637061}
   _rightKickFretPosition: {fileID: 5108887330269191782}
+  PadModeLaneSeparator: {fileID: 1140915460849508521}
+  FretFillFactor: 0.9
+  NoteFillFactor: 1
+  SideInsetFactor: 0
+--- !u!1 &7319667441751741356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140915460849508521}
+  - component: {fileID: 6489097292209412293}
+  - component: {fileID: 7107684506432098163}
+  - component: {fileID: 3488831184564545218}
+  m_Layer: 0
+  m_Name: Pad Mode Lane Seperator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140915460849508521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319667441751741356}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.15, z: -0.297}
+  m_LocalScale: {x: 0.02, y: 2.6891196, z: 0.019999998}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7508612376246159918}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!33 &6489097292209412293
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319667441751741356}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7107684506432098163
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319667441751741356}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 48a1bed160bf1db47ae4592019c93b7b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3488831184564545218
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7319667441751741356}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.08
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7598390404892836460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,18 +391,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7598390404892836460}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7487907470461173196 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1051735628184240032, guid: 5800c42510b55c549be95ec3ecd75e1c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7598390404892836460}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884214ccc7ba4cf1b29993d014d83056, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7508612376246159914 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 90376540996421702, guid: 5800c42510b55c549be95ec3ecd75e1c,
@@ -325,8 +415,8 @@ MonoBehaviour:
   ComboMeter: {fileID: 5459863034583426082}
   StarpowerBar: {fileID: 4397569968834985693}
   SunburstEffects: {fileID: 1900302462358772031}
-  IndicatorStripes: {fileID: 7487907470461173196}
   HitWindowDisplay: {fileID: 7686426392671820263}
+  _laneSeperator: {fileID: 7319667441751741356}
   _hudLocation: {fileID: 4218340060847917785}
   NotePool: {fileID: 4797150999688012940}
   BeatlinePool: {fileID: 897369785276829973}
@@ -334,6 +424,12 @@ MonoBehaviour:
   _fiveLaneMode: 0
   _fretArray: {fileID: 7353099902729507025}
   _kickFretFlash: {fileID: 5135833070940009271}
+--- !u!4 &7508612376246159918 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 90376540996421698, guid: 5800c42510b55c549be95ec3ecd75e1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 7598390404892836460}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7686426392671820263 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 277336160789584779, guid: 5800c42510b55c549be95ec3ecd75e1c,

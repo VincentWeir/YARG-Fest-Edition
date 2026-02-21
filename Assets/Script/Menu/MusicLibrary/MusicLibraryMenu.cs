@@ -5,6 +5,7 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using YARG.Core.Audio;
+using YARG.Core.Engine.Guitar.Engines;
 using YARG.Core.Input;
 using YARG.Core.Song;
 using YARG.Localization;
@@ -86,6 +87,8 @@ namespace YARG.Menu.MusicLibrary
         public bool HasSortHeaders { get; private set; }
 
         public bool ShouldDisplaySoloHighScores { get; private set; }
+
+        public static bool isProMode = false;
 
         private SongCategory[] _sortedSongs;
 
@@ -228,6 +231,13 @@ namespace YARG.Menu.MusicLibrary
                         () => _searchField.Focus()),
                     new NavigationScheme.Entry(MenuAction.Orange, "Menu.MusicLibrary.MoreOptions",
                         OnButtonHit, OnButtonRelease),
+                    new NavigationScheme.Entry(MenuAction.Select, isProMode ? "Menu.MusicLibrary.IsProMode.On" : "Menu.MusicLibrary.IsProMode.Off",
+                        () =>
+                        {
+                            ToggleProMode();
+                            ToastManager.ToastMessage(isProMode ? "Chart mode changed to Pro Mode." : "Chart mode changed to Pad Mode.");
+                        }
+                    )
                 }, false));
             }
             else
@@ -269,8 +279,24 @@ namespace YARG.Menu.MusicLibrary
                         StartSetlist),
                     new NavigationScheme.Entry(MenuAction.Orange, "Menu.MusicLibrary.MoreOptions",
                         OnButtonHit, OnButtonRelease),
+                    new NavigationScheme.Entry(MenuAction.Select, isProMode ? "Menu.MusicLibrary.IsProMode.On" : "Menu.MusicLibrary.IsProMode.Off",
+                        () =>
+                        {
+                            ToggleProMode();
+                        }
+                    )
                 }, false));
             }
+        }
+
+        private void ToggleProMode()
+        {
+            isProMode = !isProMode;
+            YargFiveFretEngine.isProAnchoring = !YargFiveFretEngine.isProAnchoring;
+            // Rebuild navigation scheme to update the Select label
+            SetNavigationScheme();
+            // Force re-evaluation of the search/list so filtering takes effect immediately
+            UpdateSearch(true);
         }
 
         protected override void OnSelectedIndexChanged()
@@ -446,7 +472,7 @@ namespace YARG.Menu.MusicLibrary
                     list.Add(new CategoryViewType(
                         Localize.Key("Menu.MusicLibrary.AllSongs"), songCount, SongContainer.Songs));
 
-                    if (_recommendedSongs != null)
+                    if (_recommendedSongs != null && _recommendedSongs.Length > 0)
                     {
                         string key = Localize.Key("Menu.MusicLibrary.RecommendedSongs",
                             _recommendedSongs.Length == 1 ? "Singular" : "Plural");
@@ -461,6 +487,8 @@ namespace YARG.Menu.MusicLibrary
 
                         foreach (var song in _recommendedSongs)
                         {
+                            // Recommended songs have already been filtered in UpdateSearch(),
+                            // so simply add them.
                             list.Add(new SongViewType(this, song));
                         }
                         _primaryHeaderIndex += _recommendedSongs.Length + 1;
@@ -613,6 +641,14 @@ namespace YARG.Menu.MusicLibrary
             {
                 _recommendedSongs = null;
             }
+
+            // If pro mode is active, filter recommended songs as well so it matches the library view.
+            if (_recommendedSongs != null)
+            {
+                _recommendedSongs = _recommendedSongs
+                    .Where(s => SongMatchesProMode(s))
+                    .ToArray();
+            }
         }
 
         private void Refresh()
@@ -657,6 +693,20 @@ namespace YARG.Menu.MusicLibrary
                 _searchField.gameObject.SetActive(false);
             }
 
+            // Apply Pro-mode filtering to _sortedSongs so the rest of the logic works with filtered data.
+            if (_sortedSongs != null)
+            {
+                _sortedSongs = ApplyProFilter(_sortedSongs);
+            }
+
+            // Also filter recommended songs (if set) to match pro-mode
+            if (_recommendedSongs != null)
+            {
+                _recommendedSongs = _recommendedSongs
+                    .Where(s => SongMatchesProMode(s))
+                    .ToArray();
+            }
+
             RequestViewListUpdate();
 
             if (_reloadState != MusicLibraryReloadState.Partial)
@@ -691,6 +741,49 @@ namespace YARG.Menu.MusicLibrary
                 }
             }
             _searchField.UpdateSearchText();
+        }
+
+        /// <summary>
+        /// Returns true if the given song should be shown under the current proMode setting.
+        /// It matches the literal substring "(Pro)" in the song's Name (case-insensitive).
+        /// </summary>
+        private bool SongMatchesProMode(SongEntry song)
+        {
+            // SongEntry is not nullable here, but keep a defensive check in case this method is called with null.
+            if (song == null) return false;
+
+            // SortString is a struct, so don't use the null-conditional operator.
+            // Use ToString() to get the display string.
+            var name = song.Name.ToString() ?? string.Empty;
+
+            bool containsPro = name.IndexOf("(Pro)", StringComparison.OrdinalIgnoreCase) >= 0;
+            return isProMode ? containsPro : !containsPro;
+        }
+
+        /// <summary>
+        /// Filters each SongCategory's Songs array according to pro-mode, and removes
+        /// categories that end up empty.
+        /// </summary>
+        private SongCategory[] ApplyProFilter(SongCategory[] categories)
+        {
+            if (categories is null || categories.Length == 0)
+            {
+                return Array.Empty<SongCategory>();
+            }
+
+            var result = new List<SongCategory>(categories.Length);
+            foreach (var cat in categories)
+            {
+                // SongCategory is a value type, so don't compare it to null. Instead, check the Songs array.
+                var songs = cat.Songs ?? Array.Empty<SongEntry>();
+                var filtered = songs.Where(SongMatchesProMode).ToArray();
+
+                if (filtered.Length > 0)
+                {
+                    result.Add(new SongCategory(cat.Category, filtered, cat.CategoryGroup));
+                }
+            }
+            return result.ToArray();
         }
 
         protected override void Update()

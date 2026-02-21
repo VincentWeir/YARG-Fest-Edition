@@ -10,6 +10,7 @@ using YARG.Core.Engine;
 using YARG.Core.Logging;
 using YARG.Gameplay.HUD;
 using YARG.Gameplay.Visuals;
+using YARG.Menu.MusicLibrary;
 using YARG.Player;
 using YARG.Settings;
 using YARG.Themes;
@@ -43,9 +44,9 @@ namespace YARG.Gameplay.Player
         [SerializeField]
         protected SunburstEffects SunburstEffects;
         [SerializeField]
-        protected IndicatorStripes IndicatorStripes;
-        [SerializeField]
         protected HitWindowDisplay HitWindowDisplay;
+        [SerializeField]
+        protected GameObject _laneSeperator;
 
         [SerializeField]
         private Transform _hudLocation;
@@ -70,6 +71,8 @@ namespace YARG.Gameplay.Player
 
         protected bool IsBass { get; private set; }
 
+        protected bool IsKeys { get; private set; }
+
         private float _spawnAheadDelay;
 
         public virtual void Initialize(int index, YargPlayer player, SongChart chart, TrackView trackView,
@@ -88,7 +91,6 @@ namespace YARG.Gameplay.Player
             BeatlineIndex = 0;
 
             var preset = player.EnginePreset;
-            IndicatorStripes.Initialize(preset);
 
             // Set fade information and highway length
             ZeroFadePosition = DEFAULT_ZERO_FADE_POS * Player.Profile.HighwayLength;
@@ -111,7 +113,12 @@ namespace YARG.Gameplay.Player
                 or Instrument.ProBass_17Fret
                 or Instrument.ProBass_22Fret;
 
+            IsKeys = Player.Profile.CurrentInstrument
+                is Instrument.Keys;
+
             TrackView.ShowPlayerName(player);
+
+            LaneSeperator();
         }
 
         protected override void ResetVisuals()
@@ -127,6 +134,18 @@ namespace YARG.Gameplay.Player
             BeatlinePool.ReturnAllObjects();
 
             HitWindowDisplay.SetHitWindowSize();
+        }
+
+        public void LaneSeperator()
+        {
+            if (MusicLibraryMenu.isProMode == true)
+            {
+                _laneSeperator.SetActive(false);
+            }
+            else
+            {
+                _laneSeperator.SetActive(true);
+            }
         }
     }
 

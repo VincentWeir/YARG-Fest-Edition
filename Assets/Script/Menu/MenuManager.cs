@@ -16,7 +16,7 @@ namespace YARG.Menu
             Credits,
             ProfileList,
             ProfileInfo,
-            History,
+            //History,
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace YARG.Menu
         private static readonly HashSet<Menu> _allowedLastOpenMenus = new()
         {
             Menu.MusicLibrary,
-            Menu.History
+            //Menu.History
         };
 
         /// <summary>

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using YARG.Core.Chart;
+using YARG.Core.Engine;
 using YARG.Gameplay.Player;
 using YARG.Helpers.Extensions;
+using YARG.Menu.MusicLibrary;
 using YARG.Themes;
 
 namespace YARG.Gameplay.Visuals
@@ -26,8 +29,54 @@ namespace YARG.Gameplay.Visuals
         private SustainLine _normalSustainLine;
         [SerializeField]
         private SustainLine _openSustainLine;
+        [SerializeField]
+        private GameObject sustainEndPrefab;
+        private GameObject sustainEndInstance;
 
         private SustainLine _sustainLine;
+
+        [SerializeField]
+        private float maxSustainLength;
+
+        // Keep a handle to the running fade coroutine so we can stop it when the sustain end is destroyed
+        private Coroutine _sustainFadeCoroutine;
+
+        // Dynamically updates maxSustainLength using the equation Y = 180 / BPM, and clamps Y to 1
+        private void UpdateMaxSustainLengthWithTempo()
+        {
+            // Fetch the tempo at the note's tick via YARG.Core API
+            // GameManager.Chart.SyncTrack.Tempos is a List<TempoChange> (or similar).
+            // Find the most recent tempo whose Tick <= NoteRef.Tick in a safe way.
+
+            var tempos = GameManager.Chart.SyncTrack?.Tempos;
+            float bpm = 120f; // fallback default bpm
+
+            if (tempos != null && tempos.Count > 0)
+            {
+                // Walk backwards to find the previous tempo change at or before this tick.
+                for (int i = tempos.Count - 1; i >= 0; i--)
+                {
+                    var t = tempos[i];
+                    if (t.Tick <= NoteRef.Tick)
+                    {
+                        // BeatsPerMinute is a double; cast to float to avoid CS0266
+                        bpm = (float)t.BeatsPerMinute; // adjust property name if necessary
+                        break;
+                    }
+                }
+
+                // If we didn't break (all tempos are after this note), use the first tempo entry.
+                // This can happen for very small note ticks (before first tempo change).
+                if (tempos[0].Tick > NoteRef.Tick)
+                {
+                    bpm = (float)tempos[0].BeatsPerMinute;
+                }
+            }
+
+            float x = 30f * Player.NoteSpeed;
+            float y = x / bpm;
+            maxSustainLength = y;
+        }
 
         // Make sure the remove it later if it has a sustain
         protected override float RemovePointOffset => (float) NoteRef.TimeLength * Player.NoteSpeed;
@@ -55,15 +104,16 @@ namespace YARG.Gameplay.Visuals
             {
                 // Deal with non-open notes
 
-                // Set the position
-                transform.localPosition = new Vector3(GetElementX(NoteRef.Fret, 5), 0f, 0f) * LeftyFlipMultiplier;
+                // Set the position using mapped X when available
+                float x = GetElementX_Mapped(NoteRef.Fret, 5);
+                transform.localPosition = new Vector3(x, 0f, 0f);
 
                 // Get which note model to use
                 NoteGroup = NoteRef.Type switch
                 {
                     GuitarNoteType.Strum => noteGroups[(int) NoteType.Strum],
-                    GuitarNoteType.Hopo  => noteGroups[(int) NoteType.HOPO],
-                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.Tap],
+                    GuitarNoteType.Hopo  => noteGroups[(int) NoteType.Tap],
+                    GuitarNoteType.Tap   => notegroupsafe(noteGroups, (int) NoteType.Strum),
                     _ => throw new ArgumentOutOfRangeException(nameof(NoteRef.Type))
                 };
 
@@ -79,9 +129,9 @@ namespace YARG.Gameplay.Visuals
                 // Get which note model to use
                 NoteGroup = NoteRef.Type switch
                 {
-                    GuitarNoteType.Strum => noteGroups[(int) NoteType.Open],
+                    GuitarNoteType.Strum => notegroupsafe(noteGroups, (int) NoteType.Open),
                     GuitarNoteType.Hopo or
-                    GuitarNoteType.Tap   => noteGroups[(int) NoteType.OpenHOPO],
+                    GuitarNoteType.Tap   => notegroupsafe(noteGroups, (int) NoteType.OpenHOPO),
                     _ => throw new ArgumentOutOfRangeException(nameof(NoteRef.Type))
                 };
 
@@ -92,13 +142,147 @@ namespace YARG.Gameplay.Visuals
             NoteGroup.SetActive(true);
             NoteGroup.Initialize();
 
+            var fretArray = Player.GetComponentInChildren<FretArray>();
+            if (fretArray != null && fretArray.IsUsingVisualFretCount())
+            {
+                float spacing = fretArray.GetVisualSpacing();
+                if (spacing > 0f)
+                {
+                    float fill = fretArray.GetNoteFillFactor();
+                    float desiredWidth = spacing * fill;
+
+                    // Compute multiplier relative to the NoteGroup's current absolute X scale
+                    // (use the first non-null NoteGroup to get a baseline)
+                    float baselineAbsX = 0f;
+                    float baselineSignX = 1f;
+                    NoteGroup baselineGroup = null;
+                    foreach (var g in NoteGroups)
+                    {
+                        if (g != null)
+                        {
+                            baselineGroup = g;
+                            break;
+                        }
+                    }
+                    if (baselineGroup == null)
+                    {
+                        // fallback to using current NoteGroup if arrays are not yet set
+                        baselineGroup = NoteGroup;
+                    }
+
+                    if (baselineGroup != null)
+                    {
+                        var baseScale = baselineGroup.transform.localScale;
+                        baselineSignX = Mathf.Sign(baseScale.x);
+                        baselineAbsX = Math.Abs(baseScale.x);
+                    }
+
+                    float multiplier = (baselineAbsX > 1e-6f) ? (desiredWidth / baselineAbsX) : fill;
+
+                    // Apply the new scale to all theme note groups so swapping doesn't jump.
+                    if (NoteGroups != null)
+                    {
+                        for (int i = 0; i < NoteGroups.Length; i++)
+                        {
+                            var g = NoteGroups[i];
+                            if (g == null) continue;
+                            var gs = g.transform.localScale;
+                            g.transform.localScale = new Vector3(Mathf.Abs(desiredWidth) * Mathf.Sign(gs.x), gs.y * multiplier, gs.z * multiplier);
+                        }
+                    }
+
+                    if (StarPowerNoteGroups != null)
+                    {
+                        for (int i = 0; i < StarPowerNoteGroups.Length; i++)
+                        {
+                            var g = StarPowerNoteGroups[i];
+                            if (g == null) continue;
+                            var gs = g.transform.localScale;
+                            g.transform.localScale = new Vector3(Mathf.Abs(desiredWidth) * Mathf.Sign(gs.x), gs.y * multiplier, gs.z * multiplier);
+                        }
+                    }
+                }
+            }
+
             // Set line length
             if (NoteRef.IsSustain)
             {
+                // --- Dynamic sustain length threshold using tempo ---
+                UpdateMaxSustainLengthWithTempo();
+                
                 _sustainLine.gameObject.SetActive(true);
 
                 float len = (float) NoteRef.TimeLength * Player.NoteSpeed;
                 _sustainLine.Initialize(len);
+
+                const float sustainThresholdTolerance = 0.05f;
+                if (len <= maxSustainLength + sustainThresholdTolerance && sustainEndPrefab != null && sustainEndInstance == null && MusicLibraryMenu.isProMode == false)
+                {
+                    sustainEndInstance = Instantiate(sustainEndPrefab, transform);
+                    sustainEndInstance.transform.localPosition = new Vector3(0f, 0f, len);
+
+                    // Scale sustain end to match note visuals:
+                    // Find a baseline NoteGroup (first non-null) and copy its localScale.
+                    // This preserves the X sign (lefty flip) and Y/Z multipliers used for the gem.
+                    Vector3 sustainScale = Vector3.one;
+                    NoteGroup baselineGroup = null;
+                    if (NoteGroups != null)
+                    {
+                        foreach (var g in NoteGroups)
+                        {
+                            if (g != null)
+                            {
+                                baselineGroup = g;
+                                break;
+                            }
+                        }
+                    }
+                    if (baselineGroup == null)
+                    {
+                        baselineGroup = NoteGroup; // fallback
+                    }
+                    if (baselineGroup != null)
+                    {
+                        sustainScale = baselineGroup.transform.localScale;
+                    }
+                    sustainEndInstance.transform.localScale = sustainScale;
+
+                    _sustainLine._lineRenderer.enabled = false;
+
+                    // NEW: mark the underlying chart note as having a lift note so the engine can award it.
+                    // This is cleared later when the sustainEndInstance is destroyed.
+                    NoteRef.IsLiftNote = true;
+
+                    // NEW: increment the global lift-note total count safely (never decremented)
+                    try
+                    {
+                        var engine = Player?.Engine;
+                        if (engine != null)
+                        {
+                            // EngineStats is BaseStats-derived; increment the TotalCount we added
+                            engine.EngineStats.TotalNotes++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Don't allow stat incrementing issues to break gameplay. Log for debugging.
+                        Debug.LogWarning($"Failed to increment EngineStats.TotalCount for lift note: {ex}");
+                    }
+
+                    // Start the fade-in coroutine for the URP material on the sustain end instance
+                    // Stop any previous coroutine (shouldn't be one, but defensive)
+                    if (_sustainFadeCoroutine != null)
+                    {
+                        StopCoroutine(_sustainFadeCoroutine);
+                        _sustainFadeCoroutine = null;
+                    }
+
+                    _sustainFadeCoroutine = StartCoroutine(FadeInSustainEndMaterial(sustainEndInstance, 1.25f));
+                }
+                else
+                {
+                    _sustainLine._lineRenderer.enabled = true;
+                }
             }
 
             // Set note and sustain color
@@ -109,14 +293,42 @@ namespace YARG.Gameplay.Visuals
         {
             base.HitNote();
 
-            if (NoteRef.IsSustain)
-            {
-                HideNotes();
-            }
-            else
+            if (!NoteRef.IsSustain)
             {
                 ParentPool.Return(this);
             }
+            else
+            {
+                HideNotes();
+            }
+        }
+
+        public override void MissNote()
+        {
+            base.MissNote();
+
+            if (sustainEndInstance != null)
+            {
+                // Stop the fade coroutine if it's running, then destroy
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
+                Destroy(sustainEndInstance);
+                sustainEndInstance = null;
+
+                // NEW: clear the flag so this note won't be counted later
+                NoteRef.IsLiftNote = true;
+            }
+
+            if (NoteRef.IsSustain)
+            {
+                _sustainLine.gameObject.SetActive(false);
+            }
+
+            ParentPool.Return(this);
         }
 
         protected override void UpdateElement()
@@ -142,7 +354,18 @@ namespace YARG.Gameplay.Visuals
 
         private void UpdateSustain()
         {
-            _sustainLine.UpdateSustainLine(Player.NoteSpeed * GameManager.SongSpeed);
+            float adjustedSpeed = Player.NoteSpeed * GameManager.SongSpeed;
+
+            if (_sustainLine.gameObject.activeSelf)
+            {
+                _sustainLine.UpdateSustainLine(adjustedSpeed);
+            }
+
+            // Move the sustain end object with the sustain line
+            if (sustainEndInstance != null)
+            {
+                float len = (float) NoteRef.TimeLength * adjustedSpeed;
+            }
         }
 
         private void UpdateColor()
@@ -168,8 +391,173 @@ namespace YARG.Gameplay.Visuals
         {
             HideNotes();
 
+            // If sustain end object exists, destroy and clear flag
+            if (sustainEndInstance != null)
+            {
+                // Stop fade coroutine if running
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
+                Destroy(sustainEndInstance);
+                sustainEndInstance = null;
+
+                // Clear lift flag defensively
+                NoteRef.IsLiftNote = false;
+
+                // NEW: play fret hit animation(s) when sustain end is destroyed
+                TryPlayFretHitAnimation();
+            }
+
             _normalSustainLine.gameObject.SetActive(false);
             _openSustainLine.gameObject.SetActive(false);
+        }
+
+        public override void SustainEnd(bool finished)
+        {
+            if (sustainEndInstance != null)
+            {
+                // Stop fade coroutine if running
+                if (_sustainFadeCoroutine != null)
+                {
+                    StopCoroutine(_sustainFadeCoroutine);
+                    _sustainFadeCoroutine = null;
+                }
+
+                Destroy(sustainEndInstance);
+                sustainEndInstance = null;
+
+                // NEW: clear the flag so this note won't be counted again
+                NoteRef.IsLiftNote = false;
+
+                // NEW: play fret hit animation(s) when sustain end is destroyed
+                TryPlayFretHitAnimation();
+            }
+
+            if (NoteRef.IsSustain)
+            {
+                _sustainLine.gameObject.SetActive(false);
+            }
+
+            if (finished)
+            {
+                ParentPool.Return(this);
+            }
+            else
+            {
+                HideNotes();
+            }
+        }
+
+        /// <summary>
+        /// Coroutine that fades the alpha of the first Renderer material it finds on the sustain end
+        /// instance from 0 to 1 over duration seconds. It attempts to handle URP Lit materials by
+        /// trying common color property names ("_BaseColor" then "_Color"). The material instance is
+        /// accessed via renderer.material so the shared material is not modified.
+        /// 
+        /// Note: For the alpha change to be visible the material must be using a Surface Type that
+        /// supports transparency (e.g. Transparent). If the prefab's material is Opaque you will need
+        /// to either make a transparent variant or switch the material's surface type to Transparent.
+        /// </summary>
+        private IEnumerator FadeInSustainEndMaterial(GameObject instance, float duration)
+        {
+            if (instance == null)
+                yield break;
+
+            // Find a renderer (child or on the root)
+            var rend = instance.GetComponentInChildren<Renderer>();
+            if (rend == null)
+                yield break;
+
+            // Use renderer.material to create an instance (so we don't modify sharedMaterial)
+            var mat = rend.material;
+            if (mat == null)
+                yield break;
+
+            // Determine which color property to use for URP/standard materials
+            string colorProp = null;
+            if (mat.HasProperty("_BaseColor"))
+                colorProp = "_BaseColor";
+            else if (mat.HasProperty("_Color"))
+                colorProp = "_Color";
+
+            if (colorProp == null)
+                yield break;
+
+            // Ensure the material's surface type supports alpha (URP uses _Surface: 0=Opaque,1=Transparent)
+            // This is best handled by preparing the prefab material in the editor, but we do a best-effort attempt here.
+            if (mat.HasProperty("_Surface"))
+            {
+                // Set to Transparent (1) so alpha will be respected.
+                // Note: changing this at runtime may not update shader keywords in some Unity versions.
+                mat.SetFloat("_Surface", 1f);
+            }
+
+            // Read starting color and set alpha to 0 immediately
+            Color col = mat.GetColor(colorProp);
+            col.a = 0f;
+            mat.SetColor(colorProp, col);
+
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                col.a = t;
+                mat.SetColor(colorProp, col);
+                yield return null;
+            }
+
+            // Ensure final alpha is exactly 1
+            col.a = 1f;
+            mat.SetColor(colorProp, col);
+
+            // Clear stored coroutine handle
+            _sustainFadeCoroutine = null;
+        }
+
+        /// <summary>
+        /// Tries to find the FretArray for this player and trigger its hit animation.
+        /// Calls PlayHitAnimation(int) for each note in the chord but offsets the fret index
+        /// left by 1 to correct the visual alignment (clamped to valid range 0..4).
+        /// </summary>
+        private void TryPlayFretHitAnimation()
+        {
+            try
+            {
+                var fretArray = Player.GetComponentInChildren<FretArray>();
+                if (fretArray != null)
+                {
+                    // Play the hit animation for every gem in the chord (parent + children).
+                    // AllNotes enumerator yields parent first then children.
+                    foreach (var n in NoteRef.AllNotes)
+                    {
+                        // Shift left by 1 to correct alignment
+                        int targetIndex = n.Fret - 1;
+
+                        // Clamp to five-fret indices (0..4)
+                        if (targetIndex < 0) targetIndex = 0;
+                        if (targetIndex > 4) targetIndex = 4;
+
+                        fretArray.PlayHitAnimation(targetIndex);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // Don't let animation issues break gameplay; log for debugging.
+                Debug.LogWarning($"Failed to play fret hit animation: {e}");
+            }
+        }
+
+        // Helper to safely index noteGroups (defensive; preserves previous behavior)
+        private NoteGroup notegroupsafe(NoteGroup[] arr, int idx)
+        {
+            if (arr == null) return NoteGroup; // fallback already set
+            if (idx < 0 || idx >= arr.Length) return NoteGroup;
+            return arr[idx] ?? NoteGroup;
         }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 using YARG.Core;
 using YARG.Core.Audio;
 using YARG.Core.Chart;
+using YARG.Core.Chart.Validation;
 using YARG.Core.Logging;
 using YARG.Core.Replays;
 using YARG.Gameplay.Player;
@@ -176,6 +177,158 @@ namespace YARG.Gameplay
                 YargLogger.LogError(_loadFailureMessage);
                 ToastManager.ToastError(_loadFailureMessage);
 
+                global.LoadScene(SceneIndex.Menu);
+                return;
+            }
+
+            try
+            {
+                // Only validate if Chart was actually parsed (non-null)
+                if (Chart != null)
+                {
+                    var validationErrors = new List<string>();
+
+                    // Example: Validate Five-Fret guitar only if any player will play a non-pro five-fret instrument.
+                    bool anyFiveFretSpecific = YargPlayers?.Any(p =>
+                        p.Profile.CurrentInstrument == Instrument.FiveFretBass ||
+                        p.Profile.CurrentInstrument == Instrument.FiveFretRhythm ||
+                        p.Profile.CurrentInstrument == Instrument.FiveFretCoopGuitar ||
+                        p.Profile.CurrentInstrument == Instrument.FiveFretGuitar ||
+                        p.Profile.CurrentInstrument == Instrument.Keys) ?? false;
+
+                    if (anyFiveFretSpecific && Chart.FiveFretGuitar != null)
+                    {
+                        validationErrors.AddRange(YARG.Core.Chart.Validation.ChartValidator.ValidateFiveFretGuitarTrack(
+                            Chart.FiveFretGuitar, "FiveFretGuitar"));
+                    }
+
+                    // Example: Validate ProGuitar if any player will play ProGuitar
+                    bool anyProGuitar = YargPlayers?.Any(p => p.Profile.GameMode == GameMode.ProGuitar) ?? false;
+                    if (anyProGuitar)
+                    {
+                        // If you implement a pro-guitar validator, call it here. For now, check ProGuitarTracks existence.
+                        // validationErrors.AddRange(ChartValidator.ValidateProGuitarTrack(...));
+                    }
+
+                    // Example: Validate ProKeys for ProKeys players
+                    bool anyProKeys = YargPlayers?.Any(p => p.Profile.GameMode == GameMode.ProKeys) ?? false;
+                    if (anyProKeys && Chart.ProKeys != null)
+                    {
+                        // Call validator for ProKeys if implemented (e.g. taps/open notes rules)
+                        // validationErrors.AddRange(ChartValidator.ValidateProKeysTrack(...));
+                    }
+
+                    if (validationErrors.Any())
+                    {
+                        // ensure audio resources are cleaned up if audio loaded
+                        try
+                        {
+                            _mixer?.Dispose();
+                        }
+                        catch (Exception disposeEx)
+                        {
+                            YargLogger.LogException(disposeEx, "Exception disposing mixer after validation failure");
+                        }
+
+                        // Mark the load as failed so the Start() flow will return to menu.
+                        _loadState = LoadFailureState.Rescan;
+                        _loadFailureMessage = "Song failed chart validation";
+                        YargLogger.LogFormatError("Song failed validation:\n{0}", string.Join("\n", validationErrors));
+
+                        // Null out Chart so later logic won't try to use it
+                        Chart = null;
+
+                        if (ChartValidator.failedValidationMessage == 1)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Strum note detected on Pad chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 2)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: HOPO note detected on Pad chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 3)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Open note detected, not allowed.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 4)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Chord with 3+ notes detected on Pad chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 5)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Illegal chord detected on Pad chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 6)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Fifth lane note on non-Expert Pad chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 7)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Tap note detected on Pro chart.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 8)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Chord with 4+ notes detected, not allowed.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+                        else if (ChartValidator.failedValidationMessage == 9)
+                        {
+                            ToastManager.ToastWarning("This song's chart is not compatible.<br><size=70%>(Reason: Illegal triple chord detected, not allowed.)", () =>
+                            {
+                                SettingsMenu.Instance.gameObject.SetActive(true);
+                                SettingsMenu.Instance.SelectTabByName("SongManager");
+                            });
+                        }
+
+                        global.LoadScene(SceneIndex.Menu);
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // If validation throws, be conservative: abort load and clean up.
+                YargLogger.LogException(ex, "Chart validation threw an exception on main thread");
+                _mixer?.Dispose();
+                _loadState = LoadFailureState.Rescan;
+                _loadFailureMessage = "Song failed chart validation (validator error)";
+                Chart = null;
+                ToastManager.ToastWarning("This song's chart isn't compatible with YARG: Fest Edition.", () =>
+                {
+                    SettingsMenu.Instance.gameObject.SetActive(true);
+                    SettingsMenu.Instance.SelectTabByName("SongManager");
+                });
                 global.LoadScene(SceneIndex.Menu);
                 return;
             }

@@ -102,7 +102,7 @@ namespace YARG.Menu.Persistent
                     };
                     _mixer.Play(true);
 
-                    _songText.text = _nowPlaying.Name;
+                    _songText.text = _nowPlaying.Name.Original.Replace(" (Pro)", "");
                     _artistText.text = _nowPlaying.Artist;
                     _playPauseButton.sprite = _pauseSprite;
                 }

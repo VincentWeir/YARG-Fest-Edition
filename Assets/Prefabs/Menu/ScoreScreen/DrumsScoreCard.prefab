@@ -75,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 1007692541323341066, guid: 1b5d8949b9f2d7345a0fed53e687c843,
         type: 3}
       propertyPath: m_Value
-      value: 1.0000076
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1516494443395727076, guid: 1b5d8949b9f2d7345a0fed53e687c843,
         type: 3}
@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 2108278796083217426, guid: 1b5d8949b9f2d7345a0fed53e687c843,
         type: 3}
       propertyPath: m_text
-      value: Drum Statistics
+      value: Statistics
       objectReference: {fileID: 0}
     - target: {fileID: 2137235932643030495, guid: 1b5d8949b9f2d7345a0fed53e687c843,
         type: 3}
@@ -590,6 +590,21 @@ PrefabInstance:
     - target: {fileID: 2958724853193943092, guid: 1b5d8949b9f2d7345a0fed53e687c843,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191902544221229210, guid: 1b5d8949b9f2d7345a0fed53e687c843,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191902544221229210, guid: 1b5d8949b9f2d7345a0fed53e687c843,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3191902544221229210, guid: 1b5d8949b9f2d7345a0fed53e687c843,
+        type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3280583778863149243, guid: 1b5d8949b9f2d7345a0fed53e687c843,

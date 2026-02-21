@@ -16,9 +16,9 @@
             "Medium": "Medium"
         },
         "GameMode": {
-            "FiveFretGuitar": "Five Fret Guitar",
+            "FiveFretGuitar": "Controller / Guitar",
             "SixFretGuitar": "Six Fret Guitar",
-            "FourLaneDrums": "Standard Drums",
+            "FourLaneDrums": "Drums",
             "FiveLaneDrums": "5-Lane Drums",
             "ProGuitar": "Pro Guitar",
             "ProKeys": "Pro Keys",
@@ -26,16 +26,18 @@
             "Vocals": "Vocals"
         },
         "Instrument": {
-            "FiveFretGuitar": "Guitar",
+            "FiveFretGuitar": "Lead",
+            "FiveFretGuitar.Pro": "Pro Lead",
             "FiveFretBass": "Bass",
-            "FiveFretRhythm": "Rhythm Guitar",
+            "FiveFretBass.Pro": "Pro Bass",
+            "FiveFretRhythm": "Drums",
             "FiveFretCoopGuitar": "Co-op Guitar",
-            "Keys": "Keys",
+            "Keys": "Vocals",
             "SixFretGuitar": "Guitar",
             "SixFretBass": "Bass",
             "SixFretRhythm": "Rhythm Guitar",
             "SixFretCoopGuitar": "Co-op Guitar",
-            "FourLaneDrums": "Four Lane Drums",
+            "FourLaneDrums": "Pro Snare",
             "ProDrums": "Pro Drums",
             "FiveLaneDrums": "Five Lane Drums",
             "EliteDrums": "Elite Drums",
@@ -230,7 +232,7 @@
             "PlayWithReplay": "Play With Replay"
         },
         "Main": {
-            "MessageOfTheDay": "<align=center><size=32><b>Welcome to v0.13!</b></size></align>\n\nv0.13 is a major update that adds Pro Keys, brings major engine improvements for all instruments, along with a ton of quality of life features, performance improvements, and more.\n\n<b>If you have any feedback, or find any bugs, please let us know on Discord or GitHub.</b>\n\nHave fun!",
+            "MessageOfTheDay": "<align=center><size=32><b>Welcome to <i>YARG: Fest Edition!</i></b></size></align>\n\n<i>YARG: Fest Edition</i> is a mod that incorporates various changes to <i>YARG</i> and features from <i>Fortnite Festival</i>, including Lift Notes, Vocals with a 6x multiplier, 25% overdrive activation, Pro Lead/Bass/Drums, and more!\n\n<b>If you have any feedback, or find any bugs, please let me know on Discord or GitHub.</b>\n\nHave fun!</b>\n\n- VW",
             "Options": {
                 "Quickplay": "Quickplay",
                 "Practice": "Practice",
@@ -287,7 +289,11 @@
             "StartSet": "Start The Set",
             "NoSongsInPlaylist": "No Songs In Playlist",
             "CannotAddToSelf": "No, I will not create an ouroboros for you. Nice try, Jaden.",
-            "MoreOptions": "<align=left><size=80%>More Options<br>(Hold) Navigate Sections</size></align>"
+            "MoreOptions": "<align=left><size=90%>More Options<br><size=60%>(Hold) Navigate Sections</size></align>",
+            "IsProMode": {
+                "On": "<align=left><size=90%>Change Mode<br><size=60%>(Current: Pro Mode)",
+                "Off": "<align=left><size=90%>Change Mode<br><size=60%>(Current: Pad Mode)"
+            }
         },
         "ProfileInfo": {
             "Name": "Edit Profile",
